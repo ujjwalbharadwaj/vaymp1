@@ -133,16 +133,95 @@ router.delete(
 
 // get all products
 router.get(
-  "/get-all-products",
+  '/get-all-products',
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const products = await Product.find().sort({ createdAt: -1 });
+      // Pagination parameters
+      const page = parseInt(req.query.page) || 1;
+      const perPage = parseInt(req.query.perPage) || 30;
+      console.log('Pagination Params:', { page, perPage }); // Log pagination params
 
-      res.status(201).json({
+      // Sorting parameters
+      const sortBy = req.query.sortBy || 'createdAt';
+      const sortOrder = req.query.sortOrder || 'desc';
+      console.log('Sorting Params:', { sortBy, sortOrder }); // Log sorting params
+
+      // Filtering parameters (you can add more filters as needed)
+      const filters = {};
+      let query = Product.find(filters);
+      let totalProductsQuery = Product.find(filters);
+
+      // Handle sleeveType filter for multiple options
+      if (req.query.sleeveType) {
+        const sleeveTypes = req.query.sleeveType ? req.query.sleeveType.split(',') : [];
+        query = query.find({ sleeveType: { $in: sleeveTypes } });
+        totalProductsQuery = totalProductsQuery.find({ sleeveType: { $in: sleeveTypes } });
+        console.log('Sleeve Type Filter:', sleeveTypes); // Log sleeveType filter
+      }
+      if (req.query.neckType) {
+        const neckTypes = req.query.neckType ? req.query.neckType.split(',') : [];
+        query = query.find({ neckType: { $in: neckTypes } });
+        totalProductsQuery = totalProductsQuery.find({ neckType: { $in: neckTypes } });
+        console.log('Neck Type Filter:', neckTypes); // Log sleeveType filter
+      }
+      if (req.query.color) {
+        const colors = req.query.color ? req.query.color.split(',') : [];
+        query = query.find({ color: { $in: colors } });
+        totalProductsQuery = totalProductsQuery.find({ color: { $in: colors } });
+        console.log('Color Type Filter:', colors); // Log sleeveType filter
+      }
+      if (req.query.fit) {
+        const fits = req.query.fit ? req.query.fit.split(',') : [];
+        query = query.find({ fit: { $in: fits } });
+        totalProductsQuery = totalProductsQuery.find({ fit: { $in: fits } });
+        console.log('fit Type Filter:', fits); // Log sleeveType filter
+      }
+      if (req.query.fabric) {
+        const fabrics = req.query.fabric ? req.query.fabric.split(',') : [];
+        query = query.find({ fabric: { $in: fabrics } });
+        totalProductsQuery = totalProductsQuery.find({ fabric: { $in: fabrics } });
+        console.log('fabric Type Filter:', fabrics); // Log sleeveType filter
+      }
+      if (req.query.gender) {
+        const genders = req.query.gender ? req.query.gender.split(',') : [];
+        query = query.find({ gender: { $in: genders } });
+        totalProductsQuery = totalProductsQuery.find({ gender: { $in: genders } });
+        console.log('gender Type Filter:', genders); // Log sleeveType filter
+      }
+      if (req.query.occasion) {
+        const occasions = req.query.occasion ? req.query.occasion.split(',') : [];
+        query = query.find({ occasion: { $in: occasions } });
+        totalProductsQuery = totalProductsQuery.find({ occasion: { $in: occasions } });
+        console.log('occasion Type Filter:', occasions); // Log sleeveType filter
+      }
+      
+      // Update the size filter to accept arrays
+      if (req.query.size) {
+        const sizes = req.query.size ? req.query.size.split(',') : [];
+        query = query.find({ 'stock.size': { $in: sizes } }); // Correctly target the nested size property
+        totalProductsQuery = totalProductsQuery.find({ 'stock.size': { $in: sizes } }); // Also update the totalProductsQuery
+        console.log('Size Filter from Request:', sizes);
+      }
+      
+
+
+      // Query products with filtering, sorting, and pagination
+      const products = await query
+        .sort({ [sortBy]: sortOrder === 'asc' ? 1 : -1 })
+        .skip((page - 1) * perPage)
+        .limit(perPage);
+
+      // Count total products for pagination
+      const totalCount = await totalProductsQuery.countDocuments().exec();
+
+      res.status(200).json({
         success: true,
         products,
+        totalCount,
+        totalPages: Math.ceil(totalCount / perPage),
       });
     } catch (error) {
+      console.error('Error:', error); // Log error
       return next(new ErrorHandler(error, 400));
     }
   })

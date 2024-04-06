@@ -584,168 +584,168 @@ export const navItems = [
       type: "Baby Girls",
     }
   ];
-  // export const size = [
-  //   {
-  //     id: 1,
-  //     type: "2XS",
-  //   },
-  //   {
-  //     id: 2,
-  //     type: "XS",
-  //   },
-  //   {
-  //     id: 3,
-  //     type: "S",
-  //   },
-  //   {
-  //     id: 4,
-  //     type: "M",
-  //   },
-  //   {
-  //     id: 5,
-  //     type: "L",
-  //   },
-  //   {
-  //     id: 6,
-  //     type: "XL",
-  //   },
-  //   {
-  //     id: 7,
-  //     type: "2XL",
-  //   },
-  //   {
-  //     id: 8,
-  //     type: "3XL",
-  //   },
-  //   {
-  //     id: 9,
-  //     type: "4XL",
-  //   },
-  //   {
-  //     id: 10,
-  //     type: "5XL",
-  //   },
-  //   {
-  //     id: 11,
-  //     type: "6XL",
-  //   },
-  //   {
-  //     id: 12,
-  //     type: "7XL",
-  //   },
-  //   {
-  //     id: 13,
-  //     type: "8XL",
-  //   },
-  //   {
-  //     id: 14,
-  //     type: "0 - 1 Month",
-  //   },
-  //   {
-  //     id: 15,
-  //     type: "1 - 2 Months",
-  //   },
-  //   {
-  //     id: 16,
-  //     type: "2 - 3 Months",
-  //   },
-  //   {
-  //     id: 17,
-  //     type: "3 - 4 Months",
-  //   },
-  //   {
-  //     id: 18,
-  //     type: "4 - 5 Months",
-  //   },
-  //   {
-  //     id: 19,
-  //     type: "5 - 6 Months",
-  //   },
-  //   {
-  //     id: 20,
-  //     type: "6 - 7 Months",
-  //   },
-  //   {
-  //     id: 21,
-  //     type: "7 - 8 Months",
-  //   },
-  //   {
-  //     id: 22,
-  //     type: "8 - 9 Months",
-  //   },
-  //   {
-  //     id: 23,
-  //     type: "9 - 10 Months",
-  //   },
-  //   {
-  //     id: 24,
-  //     type: "10 - 11 Months",
-  //   },
-  //   {
-  //     id: 25,
-  //     type: "11 - 12 Months",
-  //   },
-  //   {
-  //     id: 26,
-  //     type: "1 - 2 Years",
-  //   },
-  //   {
-  //     id: 27,
-  //     type: "2 - 3 Years",
-  //   },
-  //   {
-  //     id: 28,
-  //     type: "3 - 4 Years",
-  //   },
-  //   {
-  //     id: 29,
-  //     type: "4 - 5 Years",
-  //   },
-  //   {
-  //     id: 30,
-  //     type: "5 - 6 Years",
-  //   },
-  //   {
-  //     id: 31,
-  //     type: "6 - 7 Years",
-  //   },
-  //   {
-  //     id: 32,
-  //     type: "7 - 8 Years",
-  //   },
-  //   {
-  //     id: 33,
-  //     type: "8 - 9 Years",
-  //   },
-  //   {
-  //     id: 34,
-  //     type: "9 - 10 Years",
-  //   },
-  //   {
-  //     id: 35,
-  //     type: "10 - 11 Years",
-  //   },
-  //   {
-  //     id: 36,
-  //     type: "11 - 12 Years",
-  //   },
-  //   {
-  //     id: 37,
-  //     type: "12 - 13 Years",
-  //   },
-  //   {
-  //     id: 38,
-  //     type: "13 - 14 Years",
-  //   },
-  //   {
-  //     id: 39,
-  //     type: "14 - 15 Years",
-  //   },
-  //   {
-  //     id: 40,
-  //     type: "15 - 16 Years",
-  //   }
-  // ];
+  export const size = [
+    {
+      id: 1,
+      type: "2XS",
+    },
+    {
+      id: 2,
+      type: "XS",
+    },
+    {
+      id: 3,
+      type: "S",
+    },
+    {
+      id: 4,
+      type: "M",
+    },
+    {
+      id: 5,
+      type: "L",
+    },
+    {
+      id: 6,
+      type: "XL",
+    },
+    {
+      id: 7,
+      type: "2XL",
+    },
+    {
+      id: 8,
+      type: "3XL",
+    },
+    {
+      id: 9,
+      type: "4XL",
+    },
+    {
+      id: 10,
+      type: "5XL",
+    },
+    {
+      id: 11,
+      type: "6XL",
+    },
+    {
+      id: 12,
+      type: "7XL",
+    },
+    {
+      id: 13,
+      type: "8XL",
+    },
+    {
+      id: 14,
+      type: "0 - 1 Month",
+    },
+    {
+      id: 15,
+      type: "1 - 2 Months",
+    },
+    {
+      id: 16,
+      type: "2 - 3 Months",
+    },
+    {
+      id: 17,
+      type: "3 - 4 Months",
+    },
+    {
+      id: 18,
+      type: "4 - 5 Months",
+    },
+    {
+      id: 19,
+      type: "5 - 6 Months",
+    },
+    {
+      id: 20,
+      type: "6 - 7 Months",
+    },
+    {
+      id: 21,
+      type: "7 - 8 Months",
+    },
+    {
+      id: 22,
+      type: "8 - 9 Months",
+    },
+    {
+      id: 23,
+      type: "9 - 10 Months",
+    },
+    {
+      id: 24,
+      type: "10 - 11 Months",
+    },
+    {
+      id: 25,
+      type: "11 - 12 Months",
+    },
+    {
+      id: 26,
+      type: "1 - 2 Years",
+    },
+    {
+      id: 27,
+      type: "2 - 3 Years",
+    },
+    {
+      id: 28,
+      type: "3 - 4 Years",
+    },
+    {
+      id: 29,
+      type: "4 - 5 Years",
+    },
+    {
+      id: 30,
+      type: "5 - 6 Years",
+    },
+    {
+      id: 31,
+      type: "6 - 7 Years",
+    },
+    {
+      id: 32,
+      type: "7 - 8 Years",
+    },
+    {
+      id: 33,
+      type: "8 - 9 Years",
+    },
+    {
+      id: 34,
+      type: "9 - 10 Years",
+    },
+    {
+      id: 35,
+      type: "10 - 11 Years",
+    },
+    {
+      id: 36,
+      type: "11 - 12 Years",
+    },
+    {
+      id: 37,
+      type: "12 - 13 Years",
+    },
+    {
+      id: 38,
+      type: "13 - 14 Years",
+    },
+    {
+      id: 39,
+      type: "14 - 15 Years",
+    },
+    {
+      id: 40,
+      type: "15 - 16 Years",
+    }
+  ];
   
   // product Data
   export const productData = [
