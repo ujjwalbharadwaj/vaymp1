@@ -762,27 +762,26 @@ if(isItemExists){
                   </div>
                 </div>
                 <div className="flex items-center pt-8">
-                  <div className="mr-4">
-                    <label
-                      htmlFor="sizeSelect"
-                      className="font-medium text-gray-800"
-                    >
-                      Select Size:
-                    </label>
-                    <select
-                      id="sizeSelect"
-                      className="ml-2 bg-gray-100 rounded px-2 py-1 focus:outline-none"
-                      value={selectedSize}
-                      onChange={(e) => setSelectedSize(e.target.value)}
-                    >
-                      <option value="">Select Size</option>
-                      <option value="S">S</option>
-                      <option value="M">M</option>
-                      <option value="L">L</option>
-                      <option value="XS">XS</option>
-                    </select>
-                  </div>
-                </div>
+            <div className="mr-4">
+              <label htmlFor="sizeSelect" className="font-medium text-gray-800">
+                Select Size:
+              </label>
+              <select
+                id="sizeSelect"
+                className="ml-2 bg-gray-100 rounded px-2 py-1 focus:outline-none"
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+              >
+                <option value="">Select Size</option>
+                {/* Map over data.stock to generate size options dynamically */}
+                {data.stock.map((item) => (
+                  <option key={item.size} value={item.size}>
+                    {item.size}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
                 {/* Add to Cart Button */}
                 <div
                   className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
