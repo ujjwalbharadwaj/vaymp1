@@ -7,7 +7,7 @@ import Header from "../components/Layout/Header";
 import Loader from "../components/Layout/Loader";
 import ProductCard from "../components/Route/ProductCard/ProductCard";
 import { getAllProducts } from "../redux/actions/product";
-import { categoriesData, productData,sleeveType,neckType,color,fabric,occasion,fit,gender } from "../static/data";
+import { categoriesData, productData,sleeveType,neckType,color,fabric,occasion,fit,gender,size } from "../static/data";
 import FilterOptions from "./FilterOptions";
 
 const ProductsPage = () => {
@@ -29,13 +29,7 @@ const ProductsPage = () => {
   });
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc");
-  const sizesFromStock = Array.from(
-    new Set(
-      allProducts.flatMap((product) =>
-        product.stock.map((item) => item.size)
-      )
-    )
-  );
+  
 
   useEffect(() => {
     if (categoryData === null) {
@@ -122,17 +116,18 @@ const ProductsPage = () => {
           {showFilters && (
             <div className="absolute top-full left-0 w-full bg-white py-2 px-4 shadow-md rounded-b-md">
               <FilterOptions
-                filters={filters}
-                handleFilterChange={handleFilterChange}
-                sizesFromStock={sizesFromStock}
-                color={color}
-                sleeveType={sleeveType}
-                neckType={neckType}
-                fabric={fabric}
-                occasion={occasion}
-                fit={fit}
-                gender={gender}
-              />
+                  filters={filters}
+                  handleFilterChange={handleFilterChange}
+                  sizesFromStock={size} // Updated prop name here
+                  color={color}
+                  sleeveType={sleeveType}
+                  neckType={neckType}
+                  fabric={fabric}
+                  occasion={occasion}
+                  fit={fit}
+                  gender={gender}
+/>
+
               <button className="mt-3 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={applyFilters}>
                 Apply Filters
               </button>

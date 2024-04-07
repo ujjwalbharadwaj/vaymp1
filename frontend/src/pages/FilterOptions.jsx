@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "../styles/styles";
+import { categoriesData, productData,sleeveType,neckType,color,fabric,occasion,fit,gender,size } from "../static/data";
 
 const FilterOptions = ({ filters, handleFilterChange, sizesFromStock, color, sleeveType, neckType, fabric, occasion, fit, gender }) => {
-  return (
+    return (
     <div className={`${styles.filterContainer}`}>
       {/* Category Filter */}
       <div>
@@ -28,30 +29,29 @@ const FilterOptions = ({ filters, handleFilterChange, sizesFromStock, color, sle
           className="w-full p-2 border border-gray-300 rounded-md"
         >
           <option value="">Any</option>
-          {sizesFromStock.map((size, index) => (
-            <option key={index} value={size}>
-              {size}
+          {sizesFromStock.map((option, index) => (
+            <option key={index} value={option.type}>
+              {option.type}
             </option>
           ))}
         </select>
       </div>
+      <label className="block mb-2">color:</label>
 
       {/* Color Filter */}
-      <div>
-        <label className="block mb-2">Color:</label>
-        <select
-          value={filters.color}
-          onChange={(e) => handleFilterChange("color", e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md"
+      <select
+        value={filters.color}
+        onChange={(e) => handleFilterChange("color", e.target.value)}
+        className="w-full p-2 border border-gray-300 rounded-md"
         >
-          <option value="">Any</option>
-          {color.map((option, index) => (
+        <option value="">Any</option>
+        {color.map((option, index) => (
             <option key={index} value={option.name}>
-              {option.name}
+            {option.name}
             </option>
-          ))}
+        ))}
         </select>
-      </div>
+
 
       {/* Sleeve Type Filter */}
       <div>
