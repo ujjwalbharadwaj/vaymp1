@@ -168,6 +168,16 @@ const ShippingInfo = ({
   zipCode,
   setZipCode,
 }) => {
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
+
+    const handleSavedAddressClick = (index, item) => {
+      setSelectedAddressIndex(index);
+      setAddress1(item.address1);
+      setAddress2(item.address2);
+      setZipCode(item.zipCode);
+      setCountry(item.country);
+      setCity(item.city);
+    };
   return (
     <div className="w-full 800px:w-[95%] bg-white rounded-md p-5 pb-8">
       <h5 className="text-[18px] font-[500]">Shipping Address</h5>
@@ -280,28 +290,23 @@ const ShippingInfo = ({
 
         <div></div>
       </form>
-      <h5
-        className="text-[18px] cursor-pointer inline-block"
+      <button
+        className="text-[18px] cursor-pointer inline-block bg-gradient-to-r from-purple-400 to-blue-500 text-white px-4 py-2 rounded-md shadow-lg hover:from-blue-500 hover:to-purple-400 transition duration-300"
         onClick={() => setUserInfo(!userInfo)}
       >
         Choose From saved address
-      </h5>
+        </button>
       {userInfo && (
         <div>
           {user &&
             user.addresses.map((item, index) => (
-              <div className="w-full flex mt-1">
+              <div key={index} className="w-full flex mt-1">
                 <input
                   type="checkbox"
                   className="mr-3"
                   value={item.addressType}
-                  onClick={() =>
-                    setAddress1(item.address1) ||
-                    setAddress2(item.address2) ||
-                    setZipCode(item.zipCode) ||
-                    setCountry(item.country) ||
-                    setCity(item.city)
-                  }
+                  checked={selectedAddressIndex === index}
+                  onChange={() => handleSavedAddressClick(index, item)}
                 />
                 <h2>{item.addressType}</h2>
               </div>
