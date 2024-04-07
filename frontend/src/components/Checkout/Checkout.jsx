@@ -22,6 +22,9 @@ const Checkout = () => {
   const [discountPrice, setDiscountPrice] = useState(null);
   const navigate = useNavigate();
 
+useEffect(()=>{
+  console.log("checkout",cart)
+},[cart])
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -54,13 +57,19 @@ const Checkout = () => {
    }
   };
 
-  const subTotalPrice = cart.reduce(
-    (acc, item) => acc + item.qty * item.discountPrice,
-    0
-  );
+  const subTotalPrice = cart.reduce((acc, item) => {
+    // Calculate the total discounted price for each item based on qty and discountPrice
+    const itemTotal = item.stock.reduce(
+      (itemAcc, stockItem) => itemAcc + stockItem.qty * item.discountPrice,
+      0
+    );
+  
+    // Add the total discounted price of this item to the accumulator
+    return acc + itemTotal;
+  }, 0);
 
   // this is shipping cost variable
-  const shipping = subTotalPrice * 0.1;
+  const shipping = subTotalPrice * 0;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

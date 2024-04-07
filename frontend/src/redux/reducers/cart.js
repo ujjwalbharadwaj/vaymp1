@@ -80,33 +80,45 @@ const initialState = {
 export const cartReducer = createReducer(initialState, {
   addToCart: (state, action) => {
     const item = action.payload;
-    const isItemExist = state.cart.find(
-      (i) => i._id === item._id && i.size === item.size
-    );
+    return {
+      ...state,
+      cart: [...state.cart, item],
+    };
+    // const isItemExist = state.cart.find(
+    //   (i) => i._id === item._id && i.size === item.size
+    // );
 
-    if (isItemExist) {
-      // Update quantity if the item with the same size exists
-      return {
-        ...state,
-        cart: state.cart.map((i) =>
-          i._id === isItemExist._id && i.size === isItemExist.size
-            ? { ...item, quantity: i.quantity + item.quantity }
-            : i
-        ),
-      };
-    } else {
-      // Add item to cart if it's a new size
-      return {
-        ...state,
-        cart: [...state.cart, item],
-      };
-    }
+    // if (isItemExist) {
+    //   // Update quantity if the item with the same size exists
+    //   return {
+    //     ...state,
+    //     cart: state.cart.map((i) =>
+    //       i._id === isItemExist._id && i.size === isItemExist.size
+    //         ? { ...item, quantity: i.quantity + item.quantity }
+    //         : i
+    //     ),
+    //   };
+    // } else {
+    //   // Add item to cart if it's a new size
+    //   return {
+    //     ...state,
+    //     cart: [...state.cart, item],
+    //   };
+    // }
   },
 
   removeFromCart: (state, action) => {
     return {
       ...state,
       cart: state.cart.filter((i) => i._id !== action.payload),
+    };
+  },
+  updateToCart: (state, action) => {
+    const item = action.payload;
+    console.log("reducer update",item)
+    return {
+      ...state,
+      cart: item
     };
   },
 });

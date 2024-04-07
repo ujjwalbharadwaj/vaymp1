@@ -13,6 +13,7 @@ router.post(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
+      // console.log("req.body",req.body)
 
       // Group cart items by shopId
       const shopItemsMap = new Map();
@@ -23,13 +24,15 @@ router.post(
           shopItemsMap.set(shopId, []);
         }
         shopItemsMap.get(shopId).push(item);
+        // console.log("cart1", item.stock);
       }
 
       // Create an order for each shop
       const orders = [];
-
       for (const [shopId, items] of shopItemsMap) {
+        
         const order = await Order.create({
+
           cart: items,
           shippingAddress,
           user,
@@ -39,8 +42,10 @@ router.post(
         orders.push(order);
 
         // Update stock for each item in the shop's cart
-        for (const item of items) {
-          await updateStockAfterOrderCreation(item);
+        for (const item of cart) {
+          // console.log("item",item)
+
+          await updateStockAfterOrderCreation(item); // Pass individual item to updateStockAfterOrderCreation
         }
       }
 
@@ -58,40 +63,37 @@ router.post(
 async function updateStockAfterOrderCreation(item) {
   const productId = item._id;
   const newStock = item.stock; // Assuming item.stock contains the updated stock array
+  console.log("newStock", newStock);
 
   try {
-    console.log("Updating stock for Product ID:", productId);
-    console.log("New Stock:", newStock);
-    console.log("Item:", item);
+    for (const stockItem of newStock) {
+      // Check if the item is selected and has quantity to update
+      if (stockItem.isSelected && stockItem.qty > 0) {
+        stockItem.quantity -= stockItem.qty; // Update the quantity based on item.qty
+        stockItem.isSelected = false; // Set isSelected to false after updating stock
+        stockItem.qty = 0; // Reset qty to 0
 
-    const product = await Product.findById(productId);
-    if (!product) {
-      throw new Error(`Product not found with ID: ${productId}`);
-    }
+        // Make HTTP PUT request to update stock using Axios
+        const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
+          stock: newStock, // Update the stock value in the request body
+        });
 
-    // // Set the entire stock array of the product to the new stock array
-    // product.stock = newStock;
-
-    // Save the updated product to the database
-    // await product.save();
-
-    // Make HTTP PUT request to update stock using Axios
-    const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
-      stock: newStock, // Update the stock value in the request body
-    });
-
-    console.log("Response from server:", response.data);
-
-    if (response.status >= 200 && response.status < 300) {
-      console.log("Stock updated successfully");
-    } else {
-      throw new Error(`Failed to update stock - Unexpected status code: ${response.status}`);
+        if (response.status >= 200 && response.status < 300) {
+          // console.log("Stock updated successfully");
+        } else {
+          throw new Error(`Failed to update stock - Unexpected status code: ${response.status}`);
+        }
+      } else {
+        // If item is not selected or qty is 0, do nothing
+        console.log("Item is not selected for updating stock or qty is 0.");
+      }
     }
   } catch (error) {
-    console.error("Error updating stock:", error.message);
+    // console.error("Error updating stock:", error.message);
     throw new Error("Failed to update stock");
   }
 }
+
 
 
 
