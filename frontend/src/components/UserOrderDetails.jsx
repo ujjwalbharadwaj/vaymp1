@@ -189,7 +189,7 @@ const UserOrderDetails = () => {
             </div>
             <div
               className={`${styles.button} text-white text-[20px] ml-3`}
-              onClick={rating > 1 ? reviewHandler : null}
+              onClick={reviewHandler}
             >
               Submit
             </div>

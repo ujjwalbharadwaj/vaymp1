@@ -142,77 +142,87 @@ router.get(
       console.log('Pagination Params:', { page, perPage }); // Log pagination params
 
       // Sorting parameters
-      const sortBy = req.query.sortBy || 'createdAt';
-      const sortOrder = req.query.sortOrder || 'desc';
+      let sortBy = ""; // Initialize sortBy variable
+let sortOrder = -1; // Default sort order is descending (high to low)
+
+if (req.query.sortBy === "priceHighToLow") {
+  sortBy = "discountPrice"; // Sort by price (high to low)
+} else if (req.query.sortBy === "priceLowToHigh") {
+  sortBy = "discountPrice"; // Sort by price (low to high)
+  sortOrder = 1; // Change sort order to ascending (low to high)
+} else if (req.query.sortBy === "latest") {
+  sortBy = "-createdAt"; // Sort by latest
+} else {
+  sortBy = "originalPrice"; // Default sort by originalPrice
+}
+
+// Use sortBy and sortOrder in your database query or sorting logic
+
+      console.log("req.query.sortBy",req.query.sortBy)
+      console.log("req.query.sortOrder",req.query.sortOrder)
+      console.log("req.query.sortBy",req.query)
+      console.log("req.query.sortBy",req.params)
+
       console.log('Sorting Params:', { sortBy, sortOrder }); // Log sorting params
 
-      // Filtering parameters (you can add more filters as needed)
+      // Filtering parameters
       const filters = {};
-      let query = Product.find(filters);
-      let totalProductsQuery = Product.find(filters);
-
-      // Handle sleeveType filter for multiple options
+      if (req.query.category) {
+        filters.category = { $in: req.query.category.split(',') };
+      }
       if (req.query.sleeveType) {
-        const sleeveTypes = req.query.sleeveType ? req.query.sleeveType.split(',') : [];
-        query = query.find({ sleeveType: { $in: sleeveTypes } });
-        totalProductsQuery = totalProductsQuery.find({ sleeveType: { $in: sleeveTypes } });
-        console.log('Sleeve Type Filter:', sleeveTypes); // Log sleeveType filter
+        filters.sleeveType = { $in: req.query.sleeveType.split(',') };
       }
       if (req.query.neckType) {
-        const neckTypes = req.query.neckType ? req.query.neckType.split(',') : [];
-        query = query.find({ neckType: { $in: neckTypes } });
-        totalProductsQuery = totalProductsQuery.find({ neckType: { $in: neckTypes } });
-        console.log('Neck Type Filter:', neckTypes); // Log sleeveType filter
+        filters.neckType = { $in: req.query.neckType.split(',') };
       }
       if (req.query.color) {
-        const colors = req.query.color ? req.query.color.split(',') : [];
-        query = query.find({ color: { $in: colors } });
-        totalProductsQuery = totalProductsQuery.find({ color: { $in: colors } });
-        console.log('Color Type Filter:', colors); // Log sleeveType filter
+        filters.color = { $in: req.query.color.split(',') };
       }
       if (req.query.fit) {
-        const fits = req.query.fit ? req.query.fit.split(',') : [];
-        query = query.find({ fit: { $in: fits } });
-        totalProductsQuery = totalProductsQuery.find({ fit: { $in: fits } });
-        console.log('fit Type Filter:', fits); // Log sleeveType filter
+        filters.fit = { $in: req.query.fit.split(',') };
       }
       if (req.query.fabric) {
-        const fabrics = req.query.fabric ? req.query.fabric.split(',') : [];
-        query = query.find({ fabric: { $in: fabrics } });
-        totalProductsQuery = totalProductsQuery.find({ fabric: { $in: fabrics } });
-        console.log('fabric Type Filter:', fabrics); // Log sleeveType filter
+        filters.fabric = { $in: req.query.fabric.split(',') };
       }
       if (req.query.gender) {
-        const genders = req.query.gender ? req.query.gender.split(',') : [];
-        query = query.find({ gender: { $in: genders } });
-        totalProductsQuery = totalProductsQuery.find({ gender: { $in: genders } });
-        console.log('gender Type Filter:', genders); // Log sleeveType filter
+        filters.gender = { $in: req.query.gender.split(',') };
       }
       if (req.query.occasion) {
-        const occasions = req.query.occasion ? req.query.occasion.split(',') : [];
-        query = query.find({ occasion: { $in: occasions } });
-        totalProductsQuery = totalProductsQuery.find({ occasion: { $in: occasions } });
-        console.log('occasion Type Filter:', occasions); // Log sleeveType filter
+        filters.occasion = { $in: req.query.occasion.split(',') };
       }
-      
-      // Update the size filter to accept arrays
       if (req.query.size) {
-        const sizes = req.query.size ? req.query.size.split(',') : [];
-        query = query.find({ 'stock.size': { $in: sizes } }); // Correctly target the nested size property
-        totalProductsQuery = totalProductsQuery.find({ 'stock.size': { $in: sizes } }); // Also update the totalProductsQuery
-        console.log('Size Filter from Request:', sizes);
+        filters['stock.size'] = { $in: req.query.size.split(',') };
+      }
+      if (req.query.customerRating) {
+        const ratingRanges = req.query.customerRating.split(','); // Split multiple ranges
+        const ratingFilters = ratingRanges.map((range) => {
+          const [minRating, maxRating] = range.split('-').map(parseFloat);
+          return { ratings: { $gte: minRating, $lte: maxRating } };
+        });
+        filters.$or = ratingFilters;
       }
       
-
+      if (req.query.priceRange) {
+        const priceRanges = req.query.priceRange.split(','); // Split multiple ranges
+        let minPrice = Infinity;
+        let maxPrice = -Infinity;
+        priceRanges.forEach((range) => {
+          const [min, max] = range.split('-').map(parseFloat);
+          minPrice = Math.min(minPrice, min);
+          maxPrice = Math.max(maxPrice, max);
+        });
+        filters.discountPrice = { $gte: minPrice, $lte: maxPrice };
+      }
 
       // Query products with filtering, sorting, and pagination
-      const products = await query
-        .sort({ [sortBy]: sortOrder === 'asc' ? 1 : -1 })
+      const products = await Product.find(filters)
+        .sort({ [sortBy]: sortOrder })
         .skip((page - 1) * perPage)
         .limit(perPage);
 
       // Count total products for pagination
-      const totalCount = await totalProductsQuery.countDocuments().exec();
+      const totalCount = await Product.countDocuments(filters);
 
       res.status(200).json({
         success: true,
@@ -226,6 +236,8 @@ router.get(
     }
   })
 );
+
+
 
 // review for a product
 router.put(
