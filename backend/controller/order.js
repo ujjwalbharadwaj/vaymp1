@@ -13,7 +13,7 @@ router.post(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
-      // console.log("req.body",req.body)
+       console.log("order created req.body",cart)
 
       // Group cart items by shopId
       const shopItemsMap = new Map();
@@ -69,9 +69,48 @@ async function updateStockAfterOrderCreation(item) {
     for (const stockItem of newStock) {
       // Check if the item is selected and has quantity to update
       if (stockItem.isSelected && stockItem.qty > 0) {
-        stockItem.quantity -= stockItem.qty; // Update the quantity based on item.qty
+        //stockItem.quantity -= stockItem.qty; // Update the quantity based on item.qty
         stockItem.isSelected = false; // Set isSelected to false after updating stock
         stockItem.qty = 0; // Reset qty to 0
+
+        // Make HTTP PUT request to update stock using Axios
+        const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
+          stock: newStock, // Update the stock value in the request body
+        });
+
+        if (response.status >= 200 && response.status < 300) {
+          // console.log("Stock updated successfully");
+        } else {
+          throw new Error(`Failed to update stock - Unexpected status code: ${response.status}`);
+        }
+      } else {
+        // If item is not selected or qty is 0, do nothing
+        console.log("Item is not selected for updating stock or qty is 0.");
+      }
+    }
+  } catch (error) {
+    // console.error("Error updating stock:", error.message);
+    throw new Error("Failed to update stock");
+  }
+}
+
+
+// Function to update stock after order creation
+async function updateStockCancel(item,size) {
+  const productId = item._id;
+  const newStock = item.stock; // Assuming item.stock contains the updated stock array
+  console.log("newStock", newStock);
+
+  try {
+    for (const stockItem of newStock) {
+      // Check if the item is selected and has quantity to update
+      if (stockItem.isSelected && stockItem.qty > 0 && stockItem.size==size) {
+        if(stockItem.qty==1){
+          stockItem.isSelected = false;
+        }
+        stockItem.quantity += 1; // Update the quantity based on item.qty
+         // Set isSelected to false after updating stock
+        stockItem.qty -= 1; // Reset qty to 0
 
         // Make HTTP PUT request to update stock using Axios
         const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
@@ -272,6 +311,43 @@ router.put(
     }
   })
 );
+
+
+// give a refund ----- user
+router.put(
+  "/order-del-qty/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const order = await Order.findById(req.params.id);
+      console.log("lllllllllllllll3",req.body.itemList)
+      
+      if (!order) {
+        return next(new ErrorHandler("Order not found with this id", 400));
+      }
+       const cartItemIndex = order.cart.findIndex((item) => item._id == req.body.itemList._id);
+ console.log("cartItemIndex",cartItemIndex)
+      if (cartItemIndex === -1) {
+        return next(new ErrorHandler("Cart item not found in the order2", 404));
+      }
+      order.cart[cartItemIndex] = req.body.itemList;
+      await order.save({ validateBeforeSave: false });
+
+      res.status(200).json({
+        success: true,
+        order,
+        message: "Order Refund Request successfully!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+
+
+
+
+
 
 // accept the refund ---- seller
 router.put(

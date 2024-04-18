@@ -33,7 +33,7 @@ const ShopsPage = () => {
               <ShopCard
                 key={shop._id} 
                 shopName={shop.name}
-                image={shop.avatar.url}
+                image={shop?.avatar?.url}
                 shopId={shop._id}
               />
             ))}

@@ -39,7 +39,7 @@ const DashboardHero = () => {
     },
     {
       field: "itemsQty",
-      headerName: "Items Qty",
+      headerName: "Items Qty6",
       type: "number",
       minWidth: 130,
       flex: 0.7,

@@ -23,7 +23,7 @@ const Checkout = () => {
   const navigate = useNavigate();
 
 useEffect(()=>{
-  console.log("checkout",cart)
+  console.log("checkout cart data",cart)
 },[cart])
   useEffect(() => {
     window.scrollTo(0, 0);

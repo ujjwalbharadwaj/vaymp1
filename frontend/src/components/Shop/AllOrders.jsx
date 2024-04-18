@@ -32,7 +32,7 @@ const AllOrders = () => {
       },
     },
     {
-      field: "itemsQty",
+      field: "itemsQty9",
       headerName: "Items Qty",
       type: "number",
       minWidth: 130,

@@ -9,6 +9,8 @@ import { addTocart } from "../../redux/actions/cart";
 
 const Wishlist = ({ setOpenWishlist }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
+  console.log("data",wishlist)
+
   const dispatch = useDispatch();
   const wishlistRef = useRef(null);
   const handleCloseClick = (event) => {
@@ -21,13 +23,80 @@ const Wishlist = ({ setOpenWishlist }) => {
   const removeFromWishlistHandler = (data) => {
     dispatch(removeFromWishlist(data));
   };
-  
+  const addToCartHandler = async (data, selectedSize, count) => {
+    console.log("addToCartHandler", data._id, selectedSize, count);
+    // console.log("id23",id)
+ const isItemExists =
+      cart &&
+      cart.find((i) => {
+         return i._id === data._id;
+      });
+      console.log("item exist",isItemExists)
+if(isItemExists){
+  let newData = JSON.parse(JSON.stringify(isItemExists));
+  // console.log("newData1",newData)
 
-  const addToCartHandler = (data) => {
-    const newData = {...data, qty:1};
-    dispatch(addTocart(newData));
-    setOpenWishlist(false);
+  newData.stock.forEach((val) => {
+    if (val.size === selectedSize) {
+      val.isSelected = true;
+      val.qty=count
+      val.quantity=val.quantity-count;
+    }
+  });
+  // newData.qty = count;
+  console.log("newData2updated", newData);
+  let newCart=JSON.parse(JSON.stringify(cart));
+   // Find the index of the item in newCart array
+   const itemIndex = newCart.findIndex((item) => item._id === isItemExists._id);
+
+   if (itemIndex !== -1) {
+     // Update the item at the found index with newData
+     newCart[itemIndex] = newData;
+     console.log("newCart updated", newCart);
+   } else {
+     console.log("Item not found in newCart array");
+   }
+
+  try {
+    dispatch(updateTocart(newCart));
+    toast.success("Item updated to cart successfully!");
+  } catch (error) {
+    console.error("Error updating stock:", error.message);
+    toast.error("Failed to add item to cart!");
   }
+}else{
+  
+  let newData = JSON.parse(JSON.stringify(data));
+
+  newData.stock.forEach((val) => {
+    if (val.size === selectedSize) {
+      val.isSelected = true;
+      val.qty=count;
+      val.quantity=val.quantity-count;
+    }else{
+      val.qty=0;
+    }
+  });
+  console.log("newData2", newData);
+  try {
+    dispatch(addTocart(newData));
+    dispatch(removeFromWishlist(data));
+    setOpenWishlist(false);
+    toast.success("Item added to cart successfully!");
+  } catch (error) {
+    console.error("Error updating stock:", error.message);
+    toast.error("Failed to add item to cart!");
+  }
+}
+
+  };
+  // const addToCartHandler = (data) => {
+  //   const newData = {...data, qty:1};
+  //   dispatch(addTocart(newData));
+  //   dispatch(removeFromWishlist(data));
+  //   setOpenWishlist(false);
+
+  // }
 
   return (
 <div
@@ -105,7 +174,7 @@ const CartSingle = ({ data,removeFromWishlistHandler,addToCartHandler }) => {
         </div>
         <div>
           <BsCartPlus size={20} className="cursor-pointer" tile="Add to cart"
-           onClick={() => addToCartHandler(data)}
+           onClick={() => addToCartHandler(data, selectedSize, count)}
           />
         </div>
       </div>

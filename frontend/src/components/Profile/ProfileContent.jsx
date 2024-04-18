@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   AiOutlineArrowRight,
   AiOutlineCamera,
-  AiOutlineDelete,
+  AiOutlineDelete
 } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { server } from "../../server";
@@ -16,7 +16,7 @@ import {
   deleteUserAddress,
   loadUser,
   updatUserAddress,
-  updateUserInformation,
+  updateUserInformation
 } from "../../redux/actions/user";
 import { Country, State } from "country-state-city";
 import { useEffect } from "react";
@@ -60,7 +60,7 @@ const ProfileContent = ({ active }) => {
             `${server}/user/update-avatar`,
             { avatar: reader.result },
             {
-              withCredentials: true,
+              withCredentials: true
             }
           )
           .then((response) => {
@@ -203,42 +203,210 @@ const ProfileContent = ({ active }) => {
 const AllOrders = () => {
   const { user } = useSelector((state) => state.user);
   const { orders } = useSelector((state) => state.order);
-  const {allProducts,isLoading} = useSelector((state) => state.products);
-
+  const { allProducts, isLoading } = useSelector((state) => state.products);
+  const [orderProduct, setorderProduct] = useState([]);
   const dispatch = useDispatch();
-
+  console.log("order 97", orders);
   useEffect(() => {
     dispatch(getAllOrdersOfUser(user._id));
   }, []);
-
+ 
+  async function updateStockCancel(item,size) {
+    const productId = item._id;
+    const newStock1 = JSON.stringify(item.stock); // Assuming item.stock contains the updated stock array
+    const newStock = JSON.parse(JSON.stringify(item.stock)); 
+    console.log("newStock", newStock);
+  
+    try {
+      for (const stockItem of newStock) {
+        // Check if the item is selected and has quantity to update
+        if (stockItem.isSelected && stockItem.qty > 0 && stockItem.size==size ) {
+          if(stockItem.qty==1){
+            stockItem.isSelected = false;
+          }
+          stockItem.quantity += 1; // Update the quantity based on item.qty
+           // Set isSelected to false after updating stock
+          stockItem.qty -= 1; // Reset qty to 0
+          console.log("after update stock",newStock)
+          // Make HTTP PUT request to update stock using Axios
+          const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
+            stock: newStock, // Update the stock value in the request body
+          });
+  
+          if (response.status >= 200 && response.status < 300) {
+            // console.log("Stock updated successfully");
+          } else {
+            throw new Error(`Failed to update stock - Unexpected status code: ${response.status}`);
+          }
+        } else {
+          // If item is not selected or qty is 0, do nothing
+          console.log("Item is not selected for updating stock or qty is 0.");
+        }
+      }
+    } catch (error) {
+      // console.error("Error updating stock:", error.message);
+      throw new Error("Failed to update stock");
+    }
+  }
+  async function updateOrderCancel(orderid, size, productdata) {
+    try {
+      const productId = productdata._id;
+      
+        orders.forEach(async (orderList) => {
+          if (orderList._id === orderid) {
+            let dummyList = JSON.parse(JSON.stringify(orderList));
+            // console.log("dummy before change", dummyList);
+            dummyList.cart.forEach(async (item) => {
+              // let itemList = JSON.parse(JSON.stringify(item));
+              if (item._id === productId) {
+                let itemList = JSON.parse(JSON.stringify(item));
+                console.log("itemList before change", itemList);
+                itemList.stock.forEach((st1) => {
+                  if(st1.size==size){
+                    if (st1.qty === 1) {
+                      st1.isSelected = false;
+                    }
+                    if (st1.qty > 0) {
+                      st1.qty -= 1;
+                      st1.quantity += 1;
+                    }
+                  }
+                 
+                });
+                console.log("itemList before change", itemList);
+                const response = await axios.put(`${server}/order/order-del-qty/${orderid}`, {
+                  itemList: itemList, // Update the stock value in the request body
+                },{ withCredentials: true });
+                if (response.status >= 200 && response.status < 300) {
+                  // console.log("Stock updated successfully");
+                  return itemList; // Return the updated dummyList
+                } else {
+                  throw new Error(`Failed to update stock - Unexpected status code: ${response.status}`);
+                }
+              }
+            });
+           
+          } else {
+            return orderList; // Return the unmodified orderList
+          }
+        })
+      
+  
+     // console.log("Updated orders:", updatedOrders);
+    } catch (error) {
+      console.error("Error updating orders:", error.message);
+      throw new Error("Failed to update orders");
+    }
+  }
+  // async function updateOrderCancel(orderid, size, productdata) {
+  //   try {
+  //     const productId = productdata._id;
+  //     const updatedOrders = await Promise.all(
+  //       orders.map(async (orderList) => {
+  //         if (orderList._id === orderid) {
+  //           let dummyList = JSON.parse(JSON.stringify(orderList));
+  //           // console.log("dummy before change", dummyList);
+  //           dummyList.cart.forEach(async (item) => {
+  //             // let itemList = JSON.parse(JSON.stringify(item));
+  //             if (item._id === productId) {
+  //               let itemList = JSON.parse(JSON.stringify(item));
+  //               console.log("itemList before change", itemList);
+  //               item.stock.forEach((st1) => {
+  //                 if(st1.size==size){
+  //                   if (st1.qty === 1) {
+  //                     st1.isSelected = false;
+  //                   }
+  //                   if (st1.qty > 0) {
+  //                     st1.qty -= 1;
+  //                     st1.quantity += 1;
+  //                   }
+  //                 }
+                 
+  //               });
+  //               console.log("itemList before change", itemList);
+  //               const response = await axios.put(`${server}/order/order-del-qty/${orderid}`, {
+  //                 itemList: itemList, // Update the stock value in the request body
+  //               },{ withCredentials: true });
+  //               if (response.status >= 200 && response.status < 300) {
+  //                 // console.log("Stock updated successfully");
+  //                 return itemList; // Return the updated dummyList
+  //               } else {
+  //                 throw new Error(`Failed to update stock - Unexpected status code: ${response.status}`);
+  //               }
+  //             }
+  //           });
+  //          // console.log("dummy after change", dummyList);
+  //           // const response = await axios.put(`${server}/order/order-del-qty/${orderid}`, {
+  //           //   dummyList1: dummyList, // Update the stock value in the request body
+  //           // },{ withCredentials: true });
+  //           // if (response.status >= 200 && response.status < 300) {
+  //           //   // console.log("Stock updated successfully");
+  //           //   return dummyList; // Return the updated dummyList
+  //           // } else {
+  //           //   throw new Error(`Failed to update stock - Unexpected status code: ${response.status}`);
+  //           // }
+  //         } else {
+  //           return orderList; // Return the unmodified orderList
+  //         }
+  //       })
+  //     );
+  
+  //     console.log("Updated orders:", updatedOrders);
+  //   } catch (error) {
+  //     console.error("Error updating orders:", error.message);
+  //     throw new Error("Failed to update orders");
+  //   }
+  // }
+  
+  
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
+    { field: "orderid", headerName: "Order ID", minWidth: 150, flex: 0.7 },
+    {
+      field: "image",
+      headerName: "Image",
+      minWidth: 100,
+      flex: 0.7,
+      // renderCell: (params) => <img src={params.row.image} alt="Product" />,
 
+      renderCell: (params) => (
+        <img
+          src={params.row.image}
+          alt="Product"
+          style={{ height: "40px", width: "40px" }}
+        />
+      )
+    },
+    {
+      field: "size",
+      headerName: "Size",
+      minWidth: 100,
+      flex: 0.7
+    },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Status99",
       minWidth: 130,
       flex: 0.7,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
           : "redColor";
-      },
+      }
     },
     {
       field: "itemsQty",
       headerName: "Items Qty",
       type: "number",
       minWidth: 130,
-      flex: 0.7,
+      flex: 0.7
     },
 
     {
       field: "total",
-      headerName: "Total",
+      headerName: "Price",
       type: "number",
       minWidth: 130,
-      flex: 0.8,
+      flex: 0.8
     },
 
     {
@@ -251,28 +419,106 @@ const AllOrders = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/user/order/${params.id}`}>
+            <Link to={`/user/order/${params.row?.orderid}`}>
               <Button>
                 <AiOutlineArrowRight size={20} />
               </Button>
             </Link>
           </>
         );
-      },
+      }
+    },
+    {
+      field: "delete",
+      headerName: "Delete",
+      minWidth: 100,
+      flex: 0.7,
+      renderCell: (params) => (
+        
+        <Button
+        variant="contained"
+        color="error"
+        onClick={async() =>{
+          await updateStockCancel(params.row.productdata,params.row.size)
+        await updateOrderCancel(params.row.orderid,params.row.size,params.row.productdata)
+          console.log("params.row",params)
+          window.location.reload();
+          //  console.log("params.row.productdata",params.row.productdata)
+          //  console.log("hparams.row.size",params.row.size)
+          
+          }}
+      >
+        Cancel 
+      </Button>
+       
+      ),
     },
   ];
 
   const row = [];
-
+  console.log("orderProduct90", orders);
   orders &&
-    orders.forEach((item) => {
-      row.push({
-        id: item._id,
-        itemsQty: item.cart.length,
-        total: "US$ " + item.totalPrice,
-        status: item.status,
+    orders.forEach((orderList) => {
+      orderList.cart.forEach((item) => {
+        //console.log("item",item)
+        item.stock.forEach((st1) => {
+          if (st1.isSelected) {
+            console.log("st1", st1);
+            let myqty=st1.qty;
+            while(myqty>0){
+              row.push({
+                id: st1._id+myqty,
+                orderid: orderList._id,
+                productid: item._id,
+                size:st1.size,
+                image: item.images[0].url,
+                itemsQty: 1,
+                total: "US$ " + item.originalPrice ,
+                status: orderList.status,
+                productdata:item
+              });
+              myqty--;
+            }
+            // row.push({
+            //   id: st1._id,
+            //   orderid: orderList._id,
+            //   size:st1.size,
+            //   image: item.images[0].url,
+            //   itemsQty: st1.qty,
+            //   total: "US$ " + item.originalPrice *st1.qty,
+            //   status: orderList.status
+            // });
+          }
+        });
       });
     });
+  // orderProduct &&
+  //   orderProduct.forEach((item) => {
+  //     //console.log("item",item)
+  //     item.stock.forEach((st1) => {
+  //       if (st1.isSelected) {
+  //         console.log("st1", st1);
+  //         row.push({
+  //           id: st1._id,
+  //           orderid: item._id,
+  //           image: item.images[0].url,
+  //           itemsQty: st1.qty,
+  //           total: "US$ " + item.totalPrice,
+  //           status: item.status
+  //         });
+  //       }
+  //     });
+  //   });
+
+  // orders &&
+  //   orders.forEach((item) => {
+  //     row.push({
+  //       id: item._id,
+  //       itemsQty: item.cart.length,
+  //       total: "US$ " + item.totalPrice,
+  //       status: item.status,
+  //     });
+  //   });
 
   return (
     <div className="pl-8 pt-1">
@@ -295,15 +541,16 @@ const AllRefundOrders = () => {
   useEffect(() => {
     dispatch(getAllOrdersOfUser(user._id));
   }, []);
+  console.log("ordeers", orders);
 
   const eligibleOrders =
     orders && orders.filter((item) => item.status === "Processing refund");
-
+  console.log("eligibleOrders", eligibleOrders);
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
 
     {
-      field: "status",
+      field: "status10",
       headerName: "Status",
       minWidth: 130,
       flex: 0.7,
@@ -311,14 +558,14 @@ const AllRefundOrders = () => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
           : "redColor";
-      },
+      }
     },
     {
       field: "itemsQty",
       headerName: "Items Qty",
       type: "number",
       minWidth: 130,
-      flex: 0.7,
+      flex: 0.7
     },
 
     {
@@ -326,7 +573,7 @@ const AllRefundOrders = () => {
       headerName: "Total",
       type: "number",
       minWidth: 130,
-      flex: 0.8,
+      flex: 0.8
     },
 
     {
@@ -346,8 +593,8 @@ const AllRefundOrders = () => {
             </Link>
           </>
         );
-      },
-    },
+      }
+    }
   ];
 
   const row = [];
@@ -358,7 +605,7 @@ const AllRefundOrders = () => {
         id: item._id,
         itemsQty: item.cart.length,
         total: "US$ " + item.totalPrice,
-        status: item.status,
+        status: item.status
       });
     });
 
@@ -379,7 +626,7 @@ const TrackOrder = () => {
   const { user } = useSelector((state) => state.user);
   const { orders } = useSelector((state) => state.order);
   const dispatch = useDispatch();
-
+  console.log("orders54", orders);
   useEffect(() => {
     dispatch(getAllOrdersOfUser(user._id));
   }, []);
@@ -396,14 +643,14 @@ const TrackOrder = () => {
         return params.getValue(params.id, "status") === "Delivered"
           ? "greenColor"
           : "redColor";
-      },
+      }
     },
     {
       field: "itemsQty",
-      headerName: "Items Qty",
+      headerName: "Items Qty55",
       type: "number",
       minWidth: 130,
-      flex: 0.7,
+      flex: 0.7
     },
 
     {
@@ -411,7 +658,7 @@ const TrackOrder = () => {
       headerName: "Total",
       type: "number",
       minWidth: 130,
-      flex: 0.8,
+      flex: 0.8
     },
 
     {
@@ -431,8 +678,8 @@ const TrackOrder = () => {
             </Link>
           </>
         );
-      },
-    },
+      }
+    }
   ];
 
   const row = [];
@@ -443,7 +690,7 @@ const TrackOrder = () => {
         id: item._id,
         itemsQty: item.cart.length,
         total: "US$ " + item.totalPrice,
-        status: item.status,
+        status: item.status
       });
     });
 
@@ -550,14 +797,14 @@ const Address = () => {
 
   const addressTypeData = [
     {
-      name: "Default",
+      name: "Default"
     },
     {
-      name: "Home",
+      name: "Home"
     },
     {
-      name: "Office",
-    },
+      name: "Office"
+    }
   ];
 
   const handleSubmit = async (e) => {
