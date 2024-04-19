@@ -60,6 +60,7 @@ router.get(
       const notifications = shops.map((shop) => ({
         shopId: shop._id,
         name: shop.name,
+        phoneNumber: shop.phoneNumber,
         email: shop.email,
         address: shop.address,
         joinedAt: shop.createdAt,

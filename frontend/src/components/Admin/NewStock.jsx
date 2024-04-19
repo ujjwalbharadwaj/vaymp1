@@ -25,7 +25,8 @@ const NewStock = () => {
             setIsLoading(false);
           });
       }, []);
-  
+   
+
   const columns = [
     { field: "images", headerName: "Image", minWidth: 150, minHeight: 300, flex: 0.7,
       renderCell: (params) => (
@@ -39,6 +40,13 @@ const NewStock = () => {
       minWidth: 180,
       flex: 1.4,
     },
+    {
+        field: "phoneNumber",
+        headerName: "Phone Number",
+        type: "string", // Change type to "string"
+        minWidth: 80,
+        flex: 0.8,
+      },
     {
         field: "newStock",
         headerName: "New Stock",
@@ -90,7 +98,7 @@ const NewStock = () => {
         renderCell: (params) => {
           return (
             <>
-            <Link to={`/shop/preview/${params.id}`}>
+            <Link to={`/shop/preview/${params.row.shopId}`}>
             <Button>
                 <AiOutlineEye size={20} />
               </Button>
@@ -103,7 +111,6 @@ const NewStock = () => {
   ];
 
   const row = [];
-
   shops &&
     shops.forEach((item, index) => {
       row.push({
@@ -111,6 +118,7 @@ const NewStock = () => {
         images: item.images,
         shopId: item.shopId, // Renaming shopId to id
         name: item.name,
+        phoneNumber: item.phoneNumber,
         newStock: item.notification, // Assuming notification indicates new stock status
         email: item.email,
         address: item.address,
