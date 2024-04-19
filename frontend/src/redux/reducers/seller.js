@@ -2,6 +2,8 @@ import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoading: true,
+  newStockNotification: false, // Add this field
+
 };
 
 export const sellerReducer = createReducer(initialState, {
@@ -33,5 +35,28 @@ export const sellerReducer = createReducer(initialState, {
   },
   clearErrors: (state) => {
     state.error = null;
+  },
+  // get all products of shop
+  getNewStockNotificationRequest: (state) => {
+    state.isLoading = true;
+  },
+  getNewStockNotificationSuccess: (state, action) => {
+    state.isLoading = false;
+    state.products = action.payload;
+  },
+  getNewStockNotificationFailed: (state, action) => {
+    state.isLoading = false;
+    state.error = action.payload;
+  },
+  updateNewStockNotificationRequest: (state) => {
+    state.isLoading = true;
+  },
+  updateNewStockNotificationSuccess: (state, action) => {
+    state.isLoading = false;
+    state.newStockNotification = action.payload.newStock; // Access the correct property
+  },
+  updateNewStockNotificationFailed: (state, action) => {
+    state.isLoading = false;
+    state.error = action.payload;
   },
 });

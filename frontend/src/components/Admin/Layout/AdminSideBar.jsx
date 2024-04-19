@@ -148,6 +148,18 @@ const AdminSideBar = ({ active }) => {
           </h5>
         </Link>
       </div>
+      <div className="w-full flex items-center p-4">
+        <Link to="/dashboard-new-stock-notification" className="w-full flex items-center">
+          <AiOutlineSetting size={30} color={`${active === 9 ? "crimson" : "#555"}`} />
+          <h5
+            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+              active === 9 ? "text-[crimson]" : "text-[#555]"
+            }`}
+          >
+            All Stock Notification
+          </h5>
+        </Link>
+      </div>
 
     </div>
   );

@@ -45,7 +45,8 @@ import {
   AdminDashboardOrders,
   AdminDashboardProducts,
   AdminDashboardEvents,
-  AdminDashboardWithdraw
+  AdminDashboardWithdraw,
+  AdminDashboardStockNotification
 } from "./routes/AdminRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -291,6 +292,14 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
+        <Route
+          path="/dashboard-new-stock-notification"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardStockNotification />
+            </ProtectedAdminRoute>
+          }
+          />
         <Route
           path="/admin-users"
           element={

@@ -23,3 +23,48 @@ export const getAllSellers = () => async (dispatch) => {
     });
   }
 };
+
+
+export const updateNewStockNotification = (shopId, newStock) => async (dispatch) => {
+  try {
+    dispatch({ type: "updateNewStockNotificationRequest" });
+
+    const response = await axios.patch(
+      `${server}/notification/new-stock-notification`,
+      { shopId, newStock }, // Send shopId and newStock in the request body
+      { withCredentials: true }
+    );
+
+    dispatch({
+      type: "updateNewStockNotificationSuccess",
+      payload: { newStock },
+    });
+  } catch (error) {
+    dispatch({
+      type: "updateNewStockNotificationFailed",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
+export const getNewStockNotification = (shopId, newStock) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "getNewStockNotificationRequest"
+    });
+
+    const { data } = await axios.get(
+      `${server}/notification/admin-new-stock-notifications`
+    );
+    dispatch({
+      type: "getNewStockNotificationSuccess",
+      payload: data.products
+    });
+  } catch (error) {
+    dispatch({
+      type: "getNewStockNotificationFailed",
+      payload: error.response.data.message
+    });
+  }
+};

@@ -4,6 +4,7 @@ const initialState = {
   isLoading: false,
   allProducts: [],
   error: null,
+
 };
 export const productReducer = createReducer(initialState, {
   productCreateRequest: (state) => {

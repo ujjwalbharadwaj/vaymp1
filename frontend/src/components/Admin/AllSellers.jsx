@@ -64,10 +64,29 @@ const AllSellers = () => {
       flex: 0.8,
     },
     {
+      field: "Preview Shop",
+      flex: 1,
+      minWidth: 150,
+      headerName: "Preview Shop",
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+          <Link to={`/shop/preview/${params.id}`}>
+          <Button>
+              <AiOutlineEye size={20} />
+            </Button>
+          </Link>
+          </>
+        );
+      },
+    },
+    {
         field: "  ",
         flex: 1,
         minWidth: 150,
-        headerName: "Create Shop",
+        headerName: "Create Product",
         type: "number",
         sortable: false,
         renderCell: (params) => {
@@ -105,7 +124,7 @@ const AllSellers = () => {
         field: "kk",
         flex: 1,
         minWidth: 150,
-        headerName: "Create Coupan",
+        headerName: "Create Coupon",
         type: "number",
         sortable: false,
         renderCell: (params) => {
@@ -137,6 +156,7 @@ const AllSellers = () => {
         );
       },
     },
+    
   ];
 
   const row = [];
