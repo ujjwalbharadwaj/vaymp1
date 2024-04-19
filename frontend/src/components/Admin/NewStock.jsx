@@ -33,7 +33,7 @@ const NewStock = () => {
         <img src={params.value} alt="Shop Image" style={{ width: 100, height: 100 }} />
       ),
     },
-    { field: "shopId", headerName: "Shop Id", minWidth: 150, flex: 0.7 },
+    { field: "shopId", headerName: "Shop Id", minWidth: 250, flex: 0.7 },
     {
       field: "name",
       headerName: "Name",
@@ -44,7 +44,7 @@ const NewStock = () => {
         field: "phoneNumber",
         headerName: "Phone Number",
         type: "string", // Change type to "string"
-        minWidth: 80,
+        minWidth: 180,
         flex: 0.8,
       },
     {
@@ -67,14 +67,14 @@ const NewStock = () => {
       field: "email",
       headerName: "Email",
       type: "text",
-      minWidth: 130,
+      minWidth: 250,
       flex: 0.7,
     },
     {
       field: "address",
       headerName: "Seller Address",
       type: "text",
-      minWidth: 130,
+      minWidth: 500,
       flex: 0.7,
     },
 
