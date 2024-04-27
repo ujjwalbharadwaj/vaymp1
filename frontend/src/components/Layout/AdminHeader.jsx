@@ -4,6 +4,8 @@ import { BiMessageSquareDetail } from 'react-icons/bi'
 import { FiPackage, FiShoppingBag } from 'react-icons/fi'
 import { MdOutlineLocalOffer } from 'react-icons/md'
 import { useSelector } from 'react-redux'
+import { HiOutlineUserGroup } from "react-icons/hi";
+import {GrWorkshop} from "react-icons/gr";
 import { Link } from 'react-router-dom'
 
 const AdminHeader = () => {
@@ -22,35 +24,48 @@ const AdminHeader = () => {
       </div>
       <div className="flex items-center">
         <div className="flex items-center mr-4">
-          <Link to="/dashboard-cupouns" className="800px:block hidden">
-            <AiOutlineGift
+        <Link to="/admin-dashboard-coupouns" className="800px:block hidden">
+        <AiOutlineGift
+              color="#555"
+              size={30}
+              className="mx-4 cursor-pointer"
+            />
+          </Link>
+          <Link to="/admin-users" className="800px:block hidden">
+            <HiOutlineUserGroup
+              color="#555"
+              size={30}
+              className="mx-4 cursor-pointer"
+            />
+          </Link>
+          <Link to="/admin-events" className="800px:block hidden">
+          <MdOutlineLocalOffer
               color="#555"
               size={30}
               className="mx-5 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-events" className="800px:block hidden">
-            <MdOutlineLocalOffer
+          <Link to="/admin-sellers" className="800px:block hidden">
+            <GrWorkshop
               color="#555"
               size={30}
-              className="mx-5 cursor-pointer"
+              className="mx-4 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-products" className="800px:block hidden">
-            <FiShoppingBag
+          <Link to="/admin-orders" className="800px:block hidden">            <FiShoppingBag
               color="#555"
               size={30}
-              className="mx-5 cursor-pointer"
+              className="mx-4 cursor-pointer"
             />
           </Link>
-          <Link to="/dashboard-orders" className="800px:block hidden">
-            <FiPackage color="#555" size={30} className="mx-5 cursor-pointer" />
+          <Link to="/admin-products" className="800px:block hidden">
+            <FiPackage color="#555" size={30} className="mx-4 cursor-pointer" />
           </Link>
           <Link to="/dashboard-messages" className="800px:block hidden">
             <BiMessageSquareDetail
               color="#555"
               size={30}
-              className="mx-5 cursor-pointer"
+              className="mx-4 cursor-pointer"
             />
           </Link>
             <img
