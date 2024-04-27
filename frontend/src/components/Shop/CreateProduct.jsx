@@ -469,14 +469,25 @@ const CreateProduct = () => {
             <label htmlFor="upload">
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
+            </div>
+
+          {/* Update to display delete buttons next to each image */}
+          <div className="w-full flex items-center flex-wrap">
             {images &&
-  images.map((image, index) => (
-    <img
-      src={image}
-      key={index} // Use index as the key
-      alt=""
-      className="h-[120px] w-[120px] object-cover m-2"
-    />
+              images.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={image}
+                    alt={`Product ${index + 1}`}
+                    className="h-[120px] w-[120px] object-cover m-2"
+                  />
+                  <button
+                    onClick={() => handleDeleteImage(index)}
+                    className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                  >
+                    <AiOutlineClose />
+                  </button>
+                </div>
   ))}
 
           </div>

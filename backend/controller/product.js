@@ -77,6 +77,7 @@ router.post(
 // get all products of a shop
 router.get(
   "/get-all-products-shop/:id",
+  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
       const products = await Product.find({ shopId: req.params.id });
@@ -93,7 +94,9 @@ router.get(
 //delete products from shop
 router.delete(
   "/delete-shop-product/:id",
-  isSeller,
+  isAuthenticated,
+  isAdmin("Admin"),
+  
   catchAsyncErrors(async (req, res, next) => {
     try {
       const productId = req.params.id;
