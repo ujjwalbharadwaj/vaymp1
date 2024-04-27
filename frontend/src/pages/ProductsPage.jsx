@@ -585,7 +585,7 @@ const ProductsPage = () => {
       ) : (
         <div>
           <Header activeHeading={3} />
-          <div class="flex">
+          <div className="flex ">
             <div className="w-1/2 relative">
               <div>
                 <button onClick={() => setFilterIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-4 flex items-left justify-between font-bold text-lg rounded-lg tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">

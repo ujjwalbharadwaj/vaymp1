@@ -31,9 +31,9 @@ const ProfileSidebar = ({ setActive, active }) => {
       });
   };
   return (
-    <div className="w-full bg-white shadow-sm rounded-[10px] p-4 pt-8">
+    <div className="sticky top-40 w-full bg-white shadow-sm rounded-[10px] p-4 pt-8">
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full mb-6"
         onClick={() => setActive(1)}
       >
         <RxPerson size={20} color={active === 1 ? "red" : ""} />
@@ -46,7 +46,7 @@ const ProfileSidebar = ({ setActive, active }) => {
         </span>
       </div>
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full mb-6"
         onClick={() => setActive(2)}
       >
         <HiOutlineShoppingBag size={20} color={active === 2 ? "red" : ""} />
@@ -59,7 +59,7 @@ const ProfileSidebar = ({ setActive, active }) => {
         </span>
       </div>
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full mb-6"
         onClick={() => setActive(3)}
       >
         <HiOutlineReceiptRefund size={20} color={active === 3 ? "red" : ""} />
@@ -73,7 +73,7 @@ const ProfileSidebar = ({ setActive, active }) => {
       </div>
 
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full mb-6"
         onClick={() => setActive(4) || navigate("/inbox")}
       >
         <AiOutlineMessage size={20} color={active === 4 ? "red" : ""} />
@@ -87,7 +87,7 @@ const ProfileSidebar = ({ setActive, active }) => {
       </div>
 
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full mb-6"
         onClick={() => setActive(5)}
       >
         <MdOutlineTrackChanges size={20} color={active === 5 ? "red" : ""} />
@@ -101,7 +101,7 @@ const ProfileSidebar = ({ setActive, active }) => {
       </div>
 
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full mb-6"
         onClick={() => setActive(6)}
       >
         <RiLockPasswordLine size={20} color={active === 6 ? "red" : ""} />
@@ -115,7 +115,7 @@ const ProfileSidebar = ({ setActive, active }) => {
       </div>
 
       <div
-        className="flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full mb-6"
         onClick={() => setActive(7)}
       >
         <TbAddressBook size={20} color={active === 7 ? "red" : ""} />
@@ -131,8 +131,8 @@ const ProfileSidebar = ({ setActive, active }) => {
       {user && user?.role === "Admin" && (
         <Link to="/admin/dashboard">
           <div
-            className="flex items-center cursor-pointer w-full mb-8"
-            onClick={() => setActive(8)}
+        className="flex items-center cursor-pointer w-full mb-6"
+        onClick={() => setActive(8)}
           >
             <MdOutlineAdminPanelSettings
               size={20}
@@ -149,7 +149,7 @@ const ProfileSidebar = ({ setActive, active }) => {
         </Link>
       )}
       <div
-        className="single_item flex items-center cursor-pointer w-full mb-8"
+        className="flex items-center cursor-pointer w-full mb-6"
         onClick={logoutHandler}
       >
         <AiOutlineLogin size={20} color={active === 8 ? "red" : ""} />
