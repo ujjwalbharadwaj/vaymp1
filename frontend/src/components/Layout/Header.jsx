@@ -6,8 +6,8 @@ import {
   AiOutlineSearch,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-import { FiChevronDown } from 'react-icons/fi';
-import { Link, useParams } from 'react-router-dom';
+import { FiChevronDown } from "react-icons/fi";
+import { Link, useParams } from "react-router-dom";
 
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiMenuAltLeft } from "react-icons/bi";
@@ -27,6 +27,8 @@ const Header = ({ activeHeading }) => {
   const { allProducts } = useSelector((state) => state.products);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
+  const [mobileSearchTerm, mobileSetSearchTerm] = useState("");
+  const [mobileSearchData, mobileSetSearchData] = useState(null);
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [openCart, setOpenCart] = useState(false);
@@ -36,6 +38,7 @@ const Header = ({ activeHeading }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { orderId } = useParams();
   const searchInputRef = useRef(null);
+  const mobileInputRef = useRef(null);
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -44,7 +47,6 @@ const Header = ({ activeHeading }) => {
     const filteredProducts =
       allProducts &&
       allProducts.filter((product) => {
-
         let p1 =
           product.name.toLowerCase().includes(term.toLowerCase()) ||
           product.category.toLowerCase().includes(term.toLowerCase()) ||
@@ -53,6 +55,22 @@ const Header = ({ activeHeading }) => {
         return p1;
       });
     setSearchData(filteredProducts);
+  };
+  const handlemobileSearchChange = (e) => {
+    const term = e.target.value;
+    mobileSetSearchTerm(term);
+
+    const filteredProducts =
+      allProducts &&
+      allProducts.filter((product) => {
+        let p1 =
+          product.name.toLowerCase().includes(term.toLowerCase()) ||
+          product.category.toLowerCase().includes(term.toLowerCase()) ||
+          product.description.toLowerCase().includes(term.toLowerCase()) ||
+          product.tags.toLowerCase().includes(term.toLowerCase());
+        return p1;
+      });
+    mobileSetSearchData(filteredProducts);
   };
 
   useEffect(() => {
@@ -67,8 +85,6 @@ const Header = ({ activeHeading }) => {
     };
     if (open) {
       document.addEventListener("click", handleClickOutside);
-  
-  
     } else {
       document.removeEventListener("click", handleClickOutside);
     }
@@ -78,8 +94,25 @@ const Header = ({ activeHeading }) => {
   }, [open]);
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (searchInputRef.current && !searchInputRef.current.contains(e.target)) {
+      if (
+        searchInputRef.current &&
+        !searchInputRef.current.contains(e.target)
+      ) {
         setSearchData(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        mobileInputRef.current &&
+        !mobileInputRef.current.contains(event.target)
+      ) {
+        mobileSetSearchData(null);
       }
     };
 
@@ -88,15 +121,23 @@ const Header = ({ activeHeading }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
 
   return (
     <>
       <div className={`${styles.section}`}>
-        <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
+        <div className="hidden 800px:h-[40px] 800px:my-[10px] 800px:flex items-center justify-between">
           <div>
             <Link to="/">
-            <h1 style={{ color: '#142337', fontSize: '44px', fontWeight: 'bold' }}>vaymp</h1>            </Link>
+              <h1
+                style={{
+                  color: "#142337",
+                  fontSize: "44px",
+                  fontWeight: "bold",
+                }}
+              >
+                vaymp
+              </h1>{" "}
+            </Link>
           </div>
           {/* search box */}
           <div className="w-[50%] relative" ref={searchInputRef}>
@@ -143,15 +184,16 @@ const Header = ({ activeHeading }) => {
         </div>
       </div>
       <div
-        className={`${active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
-      } transition hidden 800px:flex items-center justify-between w-full bg-[#3321c8] h-[70px]`}
-  >
+        className={`${
+          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
+        } transition hidden 800px:flex items-center justify-between w-full bg-[#3321c8] h-[60px]`}
+      >
         <div
           className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
         >
           {/* categories */}
           <div onClick={() => setDropDown(!dropDown)}>
-            <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
+            <div className="relative mt-[1px] h-[50px] w-[270px] hidden 1000px:block">
               <BiMenuAltLeft size={30} className="absolute top-3 left-2" />
               <button
                 className={`h-[100%] w-full flex justify-between items-center pl-10 bg-white font-sans text-lg font-[500] select-none rounded-t-md`}
@@ -219,39 +261,52 @@ const Header = ({ activeHeading }) => {
                     <CgProfile size={30} color="rgb(255 255 255 / 83%)" />
                   </Link>
                 )} */}
-                <div className={`${styles.noramlFlex}`}>
-
-<div
-  className="container mx-auto bg-blue p-2 rounded-lg shadow-lg flex items-center justify-between cursor-pointer"
-  onMouseEnter={() => setIsDropdownOpen(true)}
-  onMouseLeave={() => setIsDropdownOpen(false)}
->
-  <div className="relative">
-    {isAuthenticated ? (
-      <div className="relative flex items-center">
-        <div className="flex items-center cursor-pointer">
-          <img
-            src={`${user.avatar?.url}`}
-            className="w-8 h-8 rounded-full"
-            alt=""
-          />
-          <span className="ml-2 text-white">{user.firstName}</span>
-        </div>
-        <FiChevronDown className="ml-2 text-white" /> {/* Dropdown icon */}
-        {isDropdownOpen && (
-          <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-md z-20">
-            {/* Dropdown content */}
-            <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</Link>
-            <Link to={`/user/track/order/${orderId}`} className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Orders</Link> {/* Add Orders link */}
-          </div>
-        )}
-      </div>
-    ) : (
-      <Link to="/login">
-        <CgProfile size={30} color="rgb(255 255 255 / 83%)" />
-      </Link>
-    )}
-  </div>
+            <div className={`${styles.noramlFlex}`}>
+              <div
+                className="container mx-auto bg-blue p-2 rounded-lg shadow-lg flex items-center justify-between cursor-pointer"
+                onMouseEnter={() => setIsDropdownOpen(true)}
+                onMouseLeave={() => setIsDropdownOpen(false)}
+              >
+                <div className="relative">
+                  {isAuthenticated ? (
+                    <div className="relative flex items-center">
+                      <div className="flex items-center cursor-pointer">
+                        <img
+                          src={`${user.avatar?.url}`}
+                          className="w-8 h-8 rounded-full"
+                          alt=""
+                        />
+                        <span className="ml-2 text-white">
+                          {user.firstName}
+                        </span>
+                      </div>
+                      <FiChevronDown className="ml-2 text-white" />{" "}
+                      {/* Dropdown icon */}
+                      {isDropdownOpen && (
+                        <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-md z-20">
+                          {/* Dropdown content */}
+                          <Link
+                            to="/profile"
+                            className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                          >
+                            Profile
+                          </Link>
+                          <Link
+                            to={`/user/track/order/${orderId}`}
+                            className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                          >
+                            Orders
+                          </Link>{" "}
+                          {/* Add Orders link */}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link to="/login">
+                      <CgProfile size={30} color="rgb(255 255 255 / 83%)" />
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -268,9 +323,7 @@ const Header = ({ activeHeading }) => {
 
       {/* mobile header */}
       <div
-        className={`${active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
-      }
-      w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden`}
+        className={`sticky top-0 z-[10] bg-white w-full shadow-sm 800px:hidden`}
       >
         <div className="w-full flex items-center justify-between">
           <div>
@@ -282,7 +335,16 @@ const Header = ({ activeHeading }) => {
           </div>
           <div>
             <Link to="/">
-            <h1 style={{ color: '#142337', fontSize: '44px', fontWeight: 'bold' }}>vaymp</h1>            </Link>
+              <h1
+                style={{
+                  color: "#142337",
+                  fontSize: "44px",
+                  fontWeight: "bold",
+                }}
+              >
+                vaymp
+              </h1>
+            </Link>
           </div>
           <div>
             <div
@@ -290,16 +352,15 @@ const Header = ({ activeHeading }) => {
               onClick={() => setOpenCart(true)}
             >
               <AiOutlineShoppingCart size={30} />
-              <span class="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
+              <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
                 {cart && cart.length}
               </span>
             </div>
           </div>
           {/* cart popup */}
-          {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
-
+          {openCart && <Cart setOpenCart={setOpenCart} />}
           {/* wishlist popup */}
-          {openWishlist ? <Wishlist setOpenWishlist={setOpenWishlist} /> : null}
+          {openWishlist && <Wishlist setOpenWishlist={setOpenWishlist} />}
         </div>
 
         {/* header sidebar */}
@@ -327,37 +388,7 @@ const Header = ({ activeHeading }) => {
                 />
               </div>
 
-{/* Search bar */}
-              <div className="my-8 w-[92%] m-auto h-[40px relative]" ref={searchInputRef}>
-                <input                  
-                  type="search"
-                  placeholder="Search Product..."
-                  className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-                  {searchData && searchData.length > 0 && (<div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
-                  {searchData.map((i) => {
-                    const d = i.name;
-
-                    const Product_name = d.replace(/\s+/g, "-");
-                    return (
-                      <Link to={`/product/${i._id}`}>
-                        <div className="flex items-center">
-                          <img
-                            src={i.image_Url?.[0]?.url}
-                            alt=""
-                            className="w-[50px] mr-2"
-                          />
-                          <h5>{i.name}</h5>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-                )}
-              </div>
-
+              {/* navbar */}
               <Navbar active={activeHeading} />
               <div className={`${styles.button} ml-4 !rounded-[4px]`}>
                 <Link to="/shop-create">
@@ -401,6 +432,40 @@ const Header = ({ activeHeading }) => {
             </div>
           </div>
         )}
+        {/* search bar */}
+        <div
+          className={`sticky top-[60px] z-[10] bg-white my-1 w-full m-auto h-[40px relative] block 800px:hidden`}
+          ref={mobileInputRef}
+        >
+          <input
+            type="text"
+            placeholder="Search Product..."
+            value={mobileSearchTerm}
+            onChange={handlemobileSearchChange}
+            className="h-[40px] w-full px-2 border-[#3957db] border-[1px] rounded"
+          />
+          <AiOutlineSearch
+            size={30}
+            className="absolute right-2 top-1.5 cursor-pointer"
+          />
+
+          {mobileSearchData && mobileSearchData.length > 0 && (
+            <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
+              {mobileSearchData.map((i) => (
+                <a href={`/product/${i._id}`} key={i._id}>
+                  <div className="flex items-center">
+                    <img
+                      src={i.image_Url?.[0]?.url}
+                      alt=""
+                      className="w-[50px] mr-2"
+                    />
+                    <h5>{i.name}</h5>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
