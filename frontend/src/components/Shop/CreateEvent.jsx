@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle, AiOutlineClose,AiOutlineMinusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
@@ -115,18 +115,25 @@ const CreateEvent = () => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
 
-    setImages([]);
+    const newImages = [];
 
     files.forEach((file) => {
       const reader = new FileReader();
 
       reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImages((old) => [...old, reader.result]);
+        newImages.push(reader.result);
+
+        if (newImages.length === files.length) {
+          setImages((prevImages) => [...prevImages, ...newImages]);
         }
       };
       reader.readAsDataURL(file);
     });
+  };
+  const handleDeleteImage = (index) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
   };
   const handleAddSizeQuantity = () => {
     setSizesAndQuantities([...sizesAndQuantities, { size: "", quantity: 0 }]);
@@ -375,21 +382,41 @@ const CreateEvent = () => {
             <label htmlFor="upload">
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
+            </div>
+
+          {/* Update to display delete buttons next to each image */}
+          <div className="w-full flex items-center flex-wrap">
             {images &&
-              images.map((i) => (
-                <img
-                  src={i}
-                  key={i}
-                  alt=""
-                  className="h-[120px] w-[120px] object-cover m-2"
-                />
+              images.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={image}
+                    alt={`Product ${index + 1}`}
+                    className="h-[120px] w-[120px] object-cover m-2"
+                  />
+                  <button
+                    onClick={() => handleDeleteImage(index)}
+                    className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                  >
+                    <AiOutlineClose />
+                  </button>
+                </div>
               ))}
           </div>
           <br />
+          </div>
+
           <div>
           {loading ? (
-                <div style={{ width: "100%", display: "flex",justifyContent:"center",alignItems:"center" }}>
-                  <Circles
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+                <Circles
                       height={50}
                       width={50}
                       color="cyan"
@@ -401,8 +428,8 @@ const CreateEvent = () => {
               type="submit"
               value="Create"
               className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              />)}
-              </div>
+              />
+          )}
         </div>
       </form>
     </div>
