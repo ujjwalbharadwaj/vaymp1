@@ -27,9 +27,18 @@ const BestSellingPage = () => {
         <br />
         <br />
         <div className={`${styles.section}`}>
-          <div className="grid grid-cols-2 gap-[20px] md:gap-[25px] lg:gap-[25px] xl:gap-[30px] mb-12">
-            {data && data.map((i, index) => <ProductCard data={i} key={index} />)}
+        <div className="pt-2 hidden md:block">
+          {/* <div className="grid grid-cols-2 gap-[20px] md:gap-[25px] lg:gap-[25px] xl:gap-[30px] mb-12"> ye pehle sae for 2 cards by chatgpt */}
+          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12 ">             
+          {data && data.map((i, index) => <ProductCard data={i} key={index} />)}
           </div>
+
+          </div>
+          <div className="pt-2 md:hidden">
+            <div className="grid grid-cols-2 gap-[25px] md:grid-cols-2 md:gap-[25px] mb-12 "> 
+            {data && data.map((i, index) => <ProductCard data={i} key={index} />)}
+            </div>
+            </div>
         </div>
         <Footer />
         </div>

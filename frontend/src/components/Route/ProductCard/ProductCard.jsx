@@ -110,17 +110,17 @@ const ProductCard = ({ data, isEvent }) => {
               {data.originalPrice ? data.originalPrice + "Rs." : null}
               </h4>
               {/* <h5>{remainingItems}</h5> */}
-              <div>
+              {/* <div>
         {data.stock.map((item, index) => (
           <div key={index}>
             <h5>{item.size}: {item.quantity} items left</h5>
           </div>
         ))}
-      </div>
+      </div> */}
             </div>
-            <span className="font-[400] text-[17px] text-[#68d284]">
-              {data?.sold_out} sold
-            </span>
+            {/* <span className="font-[400] text-[17px] text-[#68d284]"> */}
+              {/* {data?.sold_out} sold */}
+            {/* </span> */}
           </div>
         </Link>
 
