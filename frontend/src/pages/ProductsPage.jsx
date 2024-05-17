@@ -449,7 +449,7 @@
 
 // export default ProductsPage;
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import Footer from "../components/Layout/Footer";
@@ -572,11 +572,33 @@ const ProductsPage = () => {
 
   const [FilterisOpen, setFilterIsOpen] = useState(false);
   const [SortisOpen, setSortIsOpen] = useState(false);
+  const filterRef = useRef(null);
+  const sortRef = useRef(null);
 
   useEffect(() => {
     applyFilters();
   }, [filters]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (filterRef.current && !filterRef.current.contains(event.target)) {
+        setFilterIsOpen(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(event.target)) {
+        setSortIsOpen(false);
+      }
+    };
+
+    if (FilterisOpen || SortisOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [FilterisOpen, SortisOpen]);
 
   return (
     <>
@@ -586,7 +608,7 @@ const ProductsPage = () => {
         <div>
           <Header activeHeading={3} />
           <div className="flex ">
-            <div className="w-1/2 relative">
+            <div className="w-1/2 relative" ref={filterRef}>
               <div>
                 <button onClick={() => setFilterIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-1 mt-1 flex items-left justify-between font-bold text-lg rounded-2xl tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">
                   Filter By
@@ -1052,7 +1074,7 @@ const ProductsPage = () => {
                 )}
               </div>
             </div>
-            <div className="w-1/2 relative">
+            <div className="w-1/2 relative" ref={sortRef}>
               <div>
                 <button onClick={() => setSortIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-1 mt-1 flex items-center justify-between font-bold text-lg rounded-2xl tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">
                   Sort By
