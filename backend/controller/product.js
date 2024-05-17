@@ -10,6 +10,8 @@ const ErrorHandler = require("../utils/ErrorHandler");
 
 router.post(
   "/create-product",
+  isAuthenticated,
+  isAdmin("Admin"),
   catchAsyncErrors(async (req, res, next) => {
     try {
       const shopId = req.body.shopId;
@@ -77,8 +79,9 @@ router.post(
 // get all products of a shop
 router.get(
   "/get-all-products-shop/:id",
-  isSeller,
-  catchAsyncErrors(async (req, res, next) => {
+  isAuthenticated,
+  isAdmin("Admin"),
+    catchAsyncErrors(async (req, res, next) => {
     try {
       const products = await Product.find({ shopId: req.params.id });
 

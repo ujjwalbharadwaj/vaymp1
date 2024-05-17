@@ -588,7 +588,7 @@ const ProductsPage = () => {
           <div className="flex ">
             <div className="w-1/2 relative">
               <div>
-                <button onClick={() => setFilterIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-4 flex items-left justify-between font-bold text-lg rounded-lg tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">
+                <button onClick={() => setFilterIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-1 mt-1 flex items-left justify-between font-bold text-lg rounded-2xl tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">
                   Filter By
                   {!FilterisOpen ? (
                     <AiOutlineCaretDown className="h-8" />
@@ -1054,7 +1054,7 @@ const ProductsPage = () => {
             </div>
             <div className="w-1/2 relative">
               <div>
-                <button onClick={() => setSortIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-4 flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">
+                <button onClick={() => setSortIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-1 mt-1 flex items-center justify-between font-bold text-lg rounded-2xl tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">
                   Sort By
                   {!SortisOpen ? (
                     <AiOutlineCaretDown className="h-8" />
