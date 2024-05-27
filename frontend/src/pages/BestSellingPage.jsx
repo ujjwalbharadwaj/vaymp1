@@ -212,6 +212,7 @@ const BestSellingPage = () => {
       ) : (
         <div>
           <Header activeHeading={2} />
+          <div className="fixed w-full z-10"> 
           <div className="flex ">
             <div className="w-1/2 relative" ref={filterRef}>
               <div>
@@ -680,6 +681,7 @@ const BestSellingPage = () => {
               </div>
             </div>
             <div className="w-1/2 relative" ref={sortRef}>
+            <div className="fixed w-1/2 z-10">
               <div>
                 <button onClick={() => setSortIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-1 mt-1 flex items-center justify-between font-bold text-lg rounded-2xl tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">
                   Sort By
@@ -753,10 +755,16 @@ const BestSellingPage = () => {
                   </div>
                 )}
               </div>
+              </div>
             </div>
           </div>
-
+          </div>
+          <div>
+            <br />
+            <br />
+          </div>
         <div className={`${styles.section}`}>
+
         <div className="pt-2 hidden md:block">
           {/* <div className="grid grid-cols-2 gap-[20px] md:gap-[25px] lg:gap-[25px] xl:gap-[30px] mb-12"> ye pehle sae for 2 cards by chatgpt */}
           <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12 ">             

@@ -607,10 +607,11 @@ const ProductsPage = () => {
       ) : (
         <div>
           <Header activeHeading={3} />
-          <div className="flex ">
+          <div className=" bg-white fixed w-full z-10">
+          <div className="flex">
             <div className="w-1/2 relative" ref={filterRef}>
               <div>
-                <button onClick={() => setFilterIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-1 mt-1 flex items-left justify-between font-bold text-lg rounded-2xl tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">
+                <button onClick={() => setFilterIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-1 mt-1 flex items-left justify-between font-bold text-lg rounded-lg tracking-wider active:border-blue-100 duration-300 active:text-blue-500">
                   Filter By
                   {!FilterisOpen ? (
                     <AiOutlineCaretDown className="h-8" />
@@ -1075,8 +1076,9 @@ const ProductsPage = () => {
               </div>
             </div>
             <div className="w-1/2 relative" ref={sortRef}>
+            <div className="bg-white fixed w-1/2 z-10">
               <div>
-                <button onClick={() => setSortIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-1 mt-1 flex items-center justify-between font-bold text-lg rounded-2xl tracking-wider border-4 border-transparent active:border-blue-100 duration-300 active:text-blue-500">
+                <button onClick={() => setSortIsOpen((prev) => !prev)} className="w-full bg-yellow-400 p-1 mt-1 flex items-center justify-between font-bold text-lg rounded-lg tracking-wider active:border-blue-100 duration-300 active:text-blue-500">
                   Sort By
                   {!SortisOpen ? (
                     <AiOutlineCaretDown className="h-8" />
@@ -1149,6 +1151,12 @@ const ProductsPage = () => {
                 )}
               </div>
             </div>
+            </div>
+          </div>
+          </div>
+          <div>
+            <br />
+            <br />
           </div>
           {/* Render product cards based on filtered data */}
           <div className={`${styles.section}`}>
