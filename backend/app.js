@@ -6,8 +6,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 app.use(cors({
-  origin: ['https://vaymp1-6bo8.vercel.app'],
-  credentials: true
+  // origin: ['https://vaymp1-6bo8.vercel.app'],
+  origin:'*', 
+   credentials:true,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
 }));
 
 // app.use(express.json());
