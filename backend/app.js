@@ -6,19 +6,17 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 app.use(cors({
-  // origin: ['https://vaymp1-6bo8.vercel.app'],
-  origin:'*', 
-   credentials:true,            //access-control-allow-credentials:true
-   optionSuccessStatus:200,
+  origin: ['https://vaymp1-6bo8.vercel.app'],
+  credentials: true
 }));
 
-// app.use(express.json());
+app.use(express.json());
 app.use(cookieParser());
 app.use("/test", (req, res) => {
   res.send("Hello world!");
 });
 
-// app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json());
