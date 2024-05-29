@@ -43,7 +43,7 @@ const createMessage = ({ senderId, receiverId, text, images }) => ({
 
 io.on("connection", (socket) => {
   // when connect
-  console.log(`a user is connected`);
+  // console.log(`a user is connected`);
 
   // take userId and socketId from user
   socket.on("addUser", (userId) => {
@@ -102,12 +102,12 @@ io.on("connection", (socket) => {
 
   //when disconnect
   socket.on("disconnect", () => {
-    console.log(`a user disconnected!`);
+    // console.log(`a user disconnected!`);
     removeUser(socket.id);
     io.emit("getUsers", users);
   });
 });
 
 server.listen(process.env.PORT || 4000, () => {
-  console.log(`server is running on port ${process.env.PORT || 4000}`);
+  // console.log(`server is running on port ${process.env.PORT || 4000}`);
 });

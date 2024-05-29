@@ -13,7 +13,7 @@ router.post(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
-       console.log("order created req.body",cart)
+      //  console.log("order created req.body",cart)
 
       // Group cart items by shopId
       const shopItemsMap = new Map();
@@ -63,7 +63,7 @@ router.post(
 async function updateStockAfterOrderCreation(item) {
   const productId = item._id;
   const newStock = item.stock; // Assuming item.stock contains the updated stock array
-  console.log("newStock", newStock);
+  // console.log("newStock", newStock);
 
   try {
     for (const stockItem of newStock) {
@@ -74,7 +74,7 @@ async function updateStockAfterOrderCreation(item) {
         stockItem.qty = 0; // Reset qty to 0
 
         // Make HTTP PUT request to update stock using Axios
-        const response = await axios.patch(`https://vaymp1.vercel.app/api/v2/product/update-stock/${productId}`, {
+        const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
           stock: newStock, // Update the stock value in the request body
         });
 
@@ -85,7 +85,7 @@ async function updateStockAfterOrderCreation(item) {
         }
       } else {
         // If item is not selected or qty is 0, do nothing
-        console.log("Item is not selected for updating stock or qty is 0.");
+        // console.log("Item is not selected for updating stock or qty is 0.");
       }
     }
   } catch (error) {
@@ -99,7 +99,7 @@ async function updateStockAfterOrderCreation(item) {
 async function updateStockCancel(item,size) {
   const productId = item._id;
   const newStock = item.stock; // Assuming item.stock contains the updated stock array
-  console.log("newStock", newStock);
+  // console.log("newStock", newStock);
 
   try {
     for (const stockItem of newStock) {
@@ -113,7 +113,7 @@ async function updateStockCancel(item,size) {
         stockItem.qty -= 1; // Reset qty to 0
 
         // Make HTTP PUT request to update stock using Axios
-        const response = await axios.patch(`https://vaymp1.vercel.app/api/v2/product/update-stock/${productId}`, {
+        const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
           stock: newStock, // Update the stock value in the request body
         });
 
@@ -124,7 +124,7 @@ async function updateStockCancel(item,size) {
         }
       } else {
         // If item is not selected or qty is 0, do nothing
-        console.log("Item is not selected for updating stock or qty is 0.");
+        // console.log("Item is not selected for updating stock or qty is 0.");
       }
     }
   } catch (error) {
@@ -238,7 +238,7 @@ router.put(
       if (!order) {
         return next(new ErrorHandler("Order not found with this id", 400));
       }
-      console.log(req.body.status)
+      // console.log(req.body.status)
       if (req.body.status === "Transferred to delivery partner") {
         order.cart.forEach(async (o) => {
           await updateOrder(o._id, o.qty);
@@ -319,13 +319,13 @@ router.put(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const order = await Order.findById(req.params.id);
-      console.log("lllllllllllllll3",req.body.itemList)
+      // console.log("lllllllllllllll3",req.body.itemList)
       
       if (!order) {
         return next(new ErrorHandler("Order not found with this id", 400));
       }
        const cartItemIndex = order.cart.findIndex((item) => item._id == req.body.itemList._id);
- console.log("cartItemIndex",cartItemIndex)
+//  console.log("cartItemIndex",cartItemIndex)
       if (cartItemIndex === -1) {
         return next(new ErrorHandler("Cart item not found in the order2", 404));
       }

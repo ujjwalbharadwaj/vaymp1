@@ -127,14 +127,14 @@ export const getAllProducts = (queryParams) => async (dispatch) => {
     const queryString = new URLSearchParams(queryParams).toString();
     const { data } = await axios.get(`${server}/product/get-all-products?${queryString}`);
     
-    console.log("API Response:", data); // Add this line for debugging
+    // console.log("API Response:", data); // Add this line for debugging
 
     dispatch({
       type: "getAllProductsSuccess",
       payload: data.products
     });
   } catch (error) {
-    console.log("API Error:", error); // Add this line for debugging
+    // console.log("API Error:", error); // Add this line for debugging
 
     dispatch({
       type: "getAllProductsFailed",

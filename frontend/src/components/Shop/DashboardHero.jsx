@@ -22,7 +22,7 @@ const DashboardHero = () => {
   const { products } = useSelector((state) => state.products);
   const { id } = useParams();
   // const seller=id;
-  console.log("seller",seller.notification)
+  // console.log("seller",seller.notification)
 
   // console.log("Id",products)
 

@@ -86,7 +86,7 @@ const DashboardMessages = () => {
         );
         setMessages(response.data.messages);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     getMessage();
@@ -121,11 +121,11 @@ const DashboardMessages = () => {
             updateLastMessage();
           })
           .catch((error) => {
-            console.log(error);
+            // console.log(error);
           });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -141,11 +141,11 @@ const DashboardMessages = () => {
         lastMessageId: seller._id,
       })
       .then((res) => {
-        console.log(res.data.conversation);
+        // console.log(res.data.conversation);
         setNewMessage("");
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -187,7 +187,7 @@ const DashboardMessages = () => {
           updateLastMessageForImage();
         });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -262,7 +262,7 @@ const MessageList = ({
   setActiveStatus,
   isLoading
 }) => {
-  console.log(data);
+  // console.log(data);
   const [user, setUser] = useState([]);
   const navigate = useNavigate();
   const handleClick = (id) => {
@@ -279,7 +279,7 @@ const MessageList = ({
         const res = await axios.get(`${server}/user/user-info/${userId}`);
         setUser(res.data.user);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     getUser();

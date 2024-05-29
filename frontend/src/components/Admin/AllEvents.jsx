@@ -18,7 +18,7 @@ const AllEvents = () => {
     });
   }, []);
   const handleDelete = (id) => {
-    console.log("id",id)
+    // console.log("id",id)
     dispatch(deleteEvent(id));
      window.location.reload();
   }

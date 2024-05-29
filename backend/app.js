@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 app.use(cors({
-  origin: ['https://vaymp1-6bo8.vercel.app'],
+  origin: ['http://localhost:3000'],
   credentials: true
 }));
 

@@ -8,7 +8,7 @@ import { BiMessageSquareDetail } from "react-icons/bi";
 import { useParams } from "react-router-dom";
 const DashboardHeader = () => {
   const { seller } = useSelector((state) => state.seller);
-  console.log("llll",seller)
+  // console.log("llll",seller)
   // const {id}=useParams()
   // const seller=id;
   return (

@@ -63,7 +63,7 @@ const ProductDetails = ({ data }) => {
     dispatch(addToWishlist(data));
   };
   const addToCartHandler2 = async (data, selectedSize, count) => {
-    console.log("addToCartHandler2", data._id, selectedSize, count);
+    // console.log("addToCartHandler2", data._id, selectedSize, count);
     const selectedProduct = data.stock.find(
       (item) => item.size === selectedSize
     );
@@ -77,7 +77,7 @@ const ProductDetails = ({ data }) => {
       cart.find((i) => {
         return i._id === data._id;
       });
-    console.log("item exist", isItemExists);
+    // console.log("item exist", isItemExists);
     if (isItemExists) {
    
       let newData = JSON.parse(JSON.stringify(isItemExists));
@@ -90,7 +90,7 @@ const ProductDetails = ({ data }) => {
         }
       });
       // newData.qty = count;
-      console.log("newData2updated", newData);
+      // console.log("newData2updated", newData);
       let newCart = JSON.parse(JSON.stringify(cart));
       // Find the index of the item in newCart array
       const itemIndex = newCart.findIndex(
@@ -100,9 +100,9 @@ const ProductDetails = ({ data }) => {
       if (itemIndex !== -1) {
         // Update the item at the found index with newData
         newCart[itemIndex] = newData;
-        console.log("newCart updated", newCart);
+        // console.log("newCart updated", newCart);
       } else {
-        console.log("Item not found in newCart array");
+        // console.log("Item not found in newCart array");
       }
       // newCart.forEach((val1)=>{
       //   if(val1._id==isItemExists.id){
@@ -130,7 +130,7 @@ const ProductDetails = ({ data }) => {
         }
       });
       //newData.qty = count;
-      console.log("newData2", newData);
+      // console.log("newData2", newData);
       try {
         // await updateStockAfterOrderCreation(itemToUpdate);
         dispatch(addTocart(newData));
@@ -143,7 +143,7 @@ const ProductDetails = ({ data }) => {
   };
 
   const addToCartHandler = async (id, selectedSize, count) => {
-    console.log("mycart777", id);
+    // console.log("mycart777", id);
     // const isItemExists =
     //   cart &&
     //   cart.find((i) => {
@@ -356,7 +356,7 @@ const ProductDetails = ({ data }) => {
                         const j1 = data.stock.find(
                           (val) => val.size === selectedSize
                         );
-                        console.log("object data", data);
+                        // console.log("object data", data);
                         addToCartHandler2(data, selectedSize, count);
                       }}
                     >
@@ -412,7 +412,7 @@ const ProductDetails = ({ data }) => {
                         const j1 = data.stock.find(
                           (val) => val.size === selectedSize
                         );
-                        console.log("object data", data);
+                        // console.log("object data", data);
                         addToCartHandler2(data, selectedSize, count);
                       }}
                     >

@@ -171,17 +171,17 @@ const CreateEvent = () => {
       start_Date: startDate?.toISOString(),
       Finish_Date: endDate?.toISOString()
     };
-    console.log("sdflllsd")
+    // console.log("sdflllsd")
     try {
       await dispatch(createevent(data));
       toast.success("Event created successfully!");
       // navigate("/dashboard-events");
       window.location.reload();
-      console.log("sdfsd")
+      // console.log("sdfsd")
       setLoading(false);
     } catch (error) {
       // Handle error
-      console.log("ffff",error)
+      // console.log("ffff",error)
       setLoading(false);
     }  };
 

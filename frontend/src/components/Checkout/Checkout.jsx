@@ -23,7 +23,7 @@ const Checkout = () => {
   const navigate = useNavigate();
 
 useEffect(()=>{
-  console.log("checkout cart data",cart)
+  // console.log("checkout cart data",cart)
 },[cart])
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -109,7 +109,7 @@ useEffect(()=>{
     ? (subTotalPrice + shipping - discountPercentenge).toFixed(2)
     : (subTotalPrice + shipping).toFixed(2);
 
-  console.log(discountPercentenge);
+  // console.log(discountPercentenge);
 
   return (
     <div className="w-full flex flex-col items-center py-8">

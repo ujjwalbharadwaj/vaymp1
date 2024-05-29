@@ -253,14 +253,14 @@ const Cart = ({ setOpenCart }) => {
   const cartRef = useRef(null);
 
   const dispatch = useDispatch();
-  console.log("cartjj", cart);
+  // console.log("cartjj", cart);
   const removeFromCartHandler = (data,selectedSize) => {
 
-    console.log("removeFromCartHandler",selectedSize)
+    // console.log("removeFromCartHandler",selectedSize)
 
     let updateCartData = JSON.parse(JSON.stringify(data));
     //addToCartHandler(data._id, data.size, quantity, data, st);
-    console.log("5555", selectedSize,data);
+    // console.log("5555", selectedSize,data);
     updateCartData.stock.forEach((val)=>{
       if(val.size==selectedSize){
         val.quantity=val.quantity+val.qty;
@@ -269,16 +269,16 @@ const Cart = ({ setOpenCart }) => {
       }
       //console.log("nmnm",val)
     })
-  console.log("nmnm",updateCartData)
+  // console.log("nmnm",updateCartData)
   let newCart=JSON.parse(JSON.stringify(cart));
   const itemIndex = newCart.findIndex((item) => item._id === updateCartData._id);
 
   if (itemIndex !== -1) {
     // Update the item at the found index with newData
     newCart[itemIndex] =updateCartData;
-    console.log("newCart updated", updateCartData);
+    // console.log("newCart updated", updateCartData);
   } else {
-    console.log("Item not found in newCart array");
+    // console.log("Item not found in newCart array");
   }
   dispatch(updateTocart(newCart));
   newCart.forEach((val5) => {
@@ -312,7 +312,7 @@ const Cart = ({ setOpenCart }) => {
     return acc + itemTotal;
   }, 0);
   
-  console.log("Total discounted price:", totalPrice);
+  // console.log("Total discounted price:", totalPrice);
   const handleCloseClick = (event) => {
     // Check if the click target is the overlay (wishlistRef) itself
     if (cartRef.current === event.target) {
@@ -329,17 +329,17 @@ const Cart = ({ setOpenCart }) => {
       // console.log("val",val)
       if (val.size == selectedSize) {
         if (st == "inc") {
-          console.log("inc", val.quantity);
+          // console.log("inc", val.quantity);
           val.quantity = val.quantity - 1;
         } else {
-          console.log("dec", val.quantity);
+          // console.log("dec", val.quantity);
           val.quantity = val.quantity + 1;
         }
       }
       return val;
     });
     oldData.stock = l;
-    console.log("lllll", oldData);
+    // console.log("lllll", oldData);
     //   const isItemExists = cart && cart.find((i) => i._id === id);
     //   if (isItemExists) {
     //     toast.error("aItem alredy in cart!");
@@ -376,14 +376,14 @@ const Cart = ({ setOpenCart }) => {
   const quantityChangeHandler = (data, quantity, st,selectedSize) => {
     const updateCartData = JSON.parse(JSON.stringify(data));
     //addToCartHandler(data._id, data.size, quantity, data, st);
-    console.log("ffffffff", quantity, st,selectedSize,data);
+    // console.log("ffffffff", quantity, st,selectedSize,data);
     updateCartData.stock.forEach((val)=>{
       if(val.size==selectedSize){
        val.qty=quantity
       }
       //console.log("nmnm",val)
     })
-  console.log("nmnm",updateCartData)
+  // console.log("nmnm",updateCartData)
   let newCart=JSON.parse(JSON.stringify(cart));
   // Find the index of the item in newCart array
   const itemIndex = newCart.findIndex((item) => item._id === updateCartData._id);
@@ -391,9 +391,9 @@ const Cart = ({ setOpenCart }) => {
   if (itemIndex !== -1) {
     // Update the item at the found index with newData
     newCart[itemIndex] =updateCartData;
-    console.log("newCart updated", updateCartData);
+    // console.log("newCart updated", updateCartData);
   } else {
-    console.log("Item not found in newCart array");
+    // console.log("Item not found in newCart array");
   }
   dispatch(updateTocart(newCart));
     // dispatch(addTocart(updateCartData));
@@ -520,7 +520,7 @@ const CartSingle = ({ val2,data, quantityChangeHandler, removeFromCartHandler })
   const totalPrice = data.discountPrice * value;
 
   const increment = () => {
-    console.log("mydata", selectedSize);
+    // console.log("mydata", selectedSize);
     const stock = data.stock.find((item) => item.size === selectedSize);
     if (stock && stock.quantity - 1 < value) {
       toast.error("Product stock limited!");

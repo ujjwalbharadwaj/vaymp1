@@ -1325,7 +1325,7 @@ const AllOrders = () => {
   orders &&
     orders.forEach((item) => {
       // console.log(item.cart[0].images[0].url)
-      console.log()
+      // console.log()
       row.push({
         id: item._id,
        image: item.cart[0].images[0].url,

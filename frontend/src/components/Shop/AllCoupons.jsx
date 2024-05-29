@@ -23,10 +23,10 @@ const AllCoupons = () => {
   const [value, setValue] = useState(null);
   const { seller } = useSelector((state) => state.seller);
   const { products } = useSelector((state) => state.products);
-  console.log("all productus",products)
+  // console.log("all productus",products)
   const {id}=useParams()
-  console.log("param id",id)
-  console.log("seller.id",seller)
+  // console.log("param id",id)
+  // console.log("seller.id",seller)
   let sellerId=id;
   if(id==undefined){
   sellerId=seller._id

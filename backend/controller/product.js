@@ -37,7 +37,7 @@ router.post(
       const { name, description, category,ShopPrice,originalPrice, discountPrice, stock,gender,color } = req.body;
       // console.log(req.body)
       if (!name || !description || !category  ||!ShopPrice||!originalPrice ||  !discountPrice || !stock || !gender || !color|| !images) {
-        console.log("object1111",originalPrice)
+        // console.log("object1111",originalPrice)
         
         return next(new ErrorHandler("Invalid product data. Please provide all required fields.", 400));
 
@@ -103,7 +103,7 @@ router.delete(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const productId = req.params.id;
-      console.log('Product ID:', productId); // Debugging statement
+      // console.log('Product ID:', productId); // Debugging statement
 
       const product = await Product.findByIdAndDelete(productId);
 
@@ -115,7 +115,7 @@ router.delete(
         const result = await cloudinary.v2.uploader.destroy(
           product.images[i].public_id
         );
-        console.log("Image deleted from cloudinary:", result);
+        // console.log("Image deleted from cloudinary:", result);
       }
 
       if (typeof product.remove !== 'function') {
@@ -124,7 +124,7 @@ router.delete(
 
       await product.remove();
 
-      console.log("Product deleted from database:", productId);
+      // console.log("Product deleted from database:", productId);
 
       res.status(200).json({
         success: true,
@@ -145,7 +145,7 @@ router.get(
       // Pagination parameters
       const page = parseInt(req.query.page) || 1;
       const perPage = parseInt(req.query.perPage) || 30;
-      console.log('Pagination Params:', { page, perPage }); // Log pagination params
+      // console.log('Pagination Params:', { page, perPage }); // Log pagination params
 
       // Sorting parameters
       let sortBy = ""; // Initialize sortBy variable
@@ -164,12 +164,12 @@ if (req.query.sortBy === "priceHighToLow") {
 
 // Use sortBy and sortOrder in your database query or sorting logic
 
-      console.log("req.query.sortBy",req.query.sortBy)
-      console.log("req.query.sortOrder",req.query.sortOrder)
-      console.log("req.query.sortBy",req.query)
-      console.log("req.query.sortBy",req.params)
+      // console.log("req.query.sortBy",req.query.sortBy)
+      // console.log("req.query.sortOrder",req.query.sortOrder)
+      // console.log("req.query.sortBy",req.query)
+      // console.log("req.query.sortBy",req.params)
 
-      console.log('Sorting Params:', { sortBy, sortOrder }); // Log sorting params
+      // console.log('Sorting Params:', { sortBy, sortOrder }); // Log sorting params
 
       // Filtering parameters
       const filters = {};

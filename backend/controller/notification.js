@@ -16,13 +16,13 @@ router.patch(
       const { shopId, newStock } = req.body;
 
       // Log the received shopId for debugging purposes
-      console.log("shopId", shopId);
+      // console.log("shopId", shopId);
 
       // Find the shop by its ID in the database
       const shop = await Shop.findById(shopId);
 
       // Log the found shop for debugging purposes
-      console.log("shop", shop);
+      // console.log("shop", shop);
 
       // Check if the shop exists
       if (!shop) {

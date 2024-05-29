@@ -24,7 +24,7 @@ export const cartReducer = createReducer(initialState, {
   },
   updateToCart: (state, action) => {
     const item = action.payload;
-    console.log("reducer update",item)
+    // console.log("reducer update",item)
     return {
       ...state,
       cart: item

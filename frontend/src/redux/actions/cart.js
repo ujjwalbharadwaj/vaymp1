@@ -22,7 +22,7 @@ export const removeFromCart = (data) => async (dispatch, getState) => {
 };
 //update to cart
 export const updateTocart = (data) => async (dispatch, getState) => {
-  console.log("updateTocart action",data)
+  // console.log("updateTocart action",data)
 
   dispatch({
     type: "updateToCart",

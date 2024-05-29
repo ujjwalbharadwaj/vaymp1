@@ -38,8 +38,8 @@ router.get(
   "/get-coupon/:id",
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
-    console.log("nm",req.params.id)
-    console.log("is seller",isSeller)
+    // console.log("nm",req.params.id)
+    // console.log("is seller",isSeller)
     try {
       const couponCodes = await CoupounCode.find({ shopId: req.params.id });
       res.status(201).json({
@@ -56,8 +56,8 @@ router.get(
   isAuthenticated,
  isAdmin("Admin"),
   catchAsyncErrors(async (req, res, next) => {
-    console.log("nm",req.params.id)
-    console.log("is seller",JSON.stringify(isSeller))
+    // console.log("nm",req.params.id)
+    // console.log("is seller",JSON.stringify(isSeller))
     try {
       const couponCodes = await CoupounCode.find({ shopId: req.params.id });
       res.status(201).json({

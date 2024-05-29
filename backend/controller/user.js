@@ -35,7 +35,7 @@ router.post("/create-user", async (req, res, next) => {
 
     const activationToken = createActivationToken(user);
 
-    const activationUrl = `export const server ="https://vaymp1-6bo8.vercel.app/activation/${activationToken}`;
+    const activationUrl = `export const server ="http://localhost:3000/activation/${activationToken}`;
 
     try {
       await sendMail({
@@ -135,7 +135,7 @@ router.get(
   "/getuser",
   isAuthenticated,
   catchAsyncErrors(async (req, res, next) => {
-    console.log("klmn",req.user)
+    // console.log("klmn",req.user)
     try {
       const user = await User.findById(req.user.id);
 

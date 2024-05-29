@@ -20,7 +20,7 @@ const AllProducts = () => {
     })
   }, []);
   const handleDelete = (id) => {
-    console.log("delete id admin",id)
+    // console.log("delete id admin",id)
     dispatch(deleteProduct(id));
     window.location.reload();
   };

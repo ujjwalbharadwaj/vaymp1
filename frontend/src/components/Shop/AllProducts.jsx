@@ -306,7 +306,7 @@ const AllProducts = () => {
     if (quantityToUpdate !== undefined && sizeToUpdate) {
       try {
         await dispatch(updateProductStock(productId, sizeToUpdate, quantityToUpdate));
-        console.log(`Successfully updated quantity for size ${sizeToUpdate} of product ${productId}`);
+        // console.log(`Successfully updated quantity for size ${sizeToUpdate} of product ${productId}`);
       } catch (error) {
         console.error(`Error updating quantity for size ${sizeToUpdate} of product ${productId}:`, error);
       }
