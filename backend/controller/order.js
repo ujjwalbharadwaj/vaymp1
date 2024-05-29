@@ -74,7 +74,7 @@ async function updateStockAfterOrderCreation(item) {
         stockItem.qty = 0; // Reset qty to 0
 
         // Make HTTP PUT request to update stock using Axios
-        const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
+        const response = await axios.patch(`https://vaymp1.vercel.app/api/v2/product/update-stock/${productId}`, {
           stock: newStock, // Update the stock value in the request body
         });
 
@@ -113,7 +113,7 @@ async function updateStockCancel(item,size) {
         stockItem.qty -= 1; // Reset qty to 0
 
         // Make HTTP PUT request to update stock using Axios
-        const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
+        const response = await axios.patch(`https://vaymp1.vercel.app/api/v2/product/update-stock/${productId}`, {
           stock: newStock, // Update the stock value in the request body
         });
 
